@@ -17,7 +17,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['~/plugins/moment'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -39,8 +39,16 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  // Used as fallback if no runtime config is provided
+  axios: {
+    host: process.env.API_PORT,
+    port: process.env.API_PORT,
+    prefix: process.env.API_PREFIX,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Public config in runtime
+  publicRuntimeConfig: {},
 };

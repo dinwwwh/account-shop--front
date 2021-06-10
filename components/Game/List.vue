@@ -1,11 +1,9 @@
 <template>
   <div class="bg-white shadow overflow-hidden sm:rounded-md">
     <ul class="divide-y divide-gray-200">
-      <GameListItem
-        v-for="(game, i) in games"
-        :key="i"
-        :game="game"
-      ></GameListItem>
+      <li v-for="(game, i) in games" :key="i">
+        <GameListItem :game="game" />
+      </li>
     </ul>
   </div>
 </template>

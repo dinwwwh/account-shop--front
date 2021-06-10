@@ -44,6 +44,7 @@ export default {
     host: process.env.API_PORT,
     port: process.env.API_PORT,
     prefix: process.env.API_PREFIX,
+    credentials: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

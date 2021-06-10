@@ -15,39 +15,36 @@
         <!-- Game's name -->
         <div class="grid grid-cols-3 gap-6">
           <div class="col-span-3 sm:col-span-2">
-            <InputPlain
-              v-model="modelGame.name"
+            <InputBase
+              v-model="game.name"
               placeholder="Liên Minh Huyền Thoại..."
             >
               <template #label> Tên game </template>
               <template #description> This is a description </template>
-            </InputPlain>
+            </InputBase>
           </div>
         </div>
 
         <!-- Publisher name -->
         <div class="grid grid-cols-3 gap-6">
           <div class="col-span-3 sm:col-span-2">
-            <InputPlain
-              v-model="modelGame.publisherName"
-              placeholder="Garena ..."
-            >
+            <InputBase v-model="game.publisherName" placeholder="Garena ...">
               <template #label> Tên nhà phát hành </template>
               <template #description> This is a description </template>
-            </InputPlain>
+            </InputBase>
           </div>
         </div>
 
         <!-- Description for game -->
         <TextareaBase
-          v-model="modelGame.description"
+          v-model="game.description"
           placeholder="game rat la vui ..."
         >
           <template #label> Mô tả game </template>
           <template #description> Hãy nghi những gì bạn thích. </template>
         </TextareaBase>
 
-        <InputBaseAvatar v-model="modelGame.image" rounded="lg">
+        <InputBaseAvatar v-model="game.image" rounded="lg">
           <template #label>Ảnh đại diện</template>
         </InputBaseAvatar>
 
@@ -63,11 +60,11 @@
 <script>
 export default {
   model: {
-    prop: 'game',
+    prop: 'modelGame',
     event: 'input',
   },
   props: {
-    game: {
+    modelGame: {
       type: Object,
       default() {
         return {};
@@ -75,9 +72,9 @@ export default {
     },
   },
   computed: {
-    modelGame: {
+    game: {
       get() {
-        return this.game;
+        return this.modelGame;
       },
       set(val) {
         this.$emit('input', val);

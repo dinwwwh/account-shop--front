@@ -49,8 +49,10 @@
           <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
             <IconCalendarEdit class="mr-1.5 size-lg text-gray-400" />
             <p>
-              Last updated
-              <time datetime="2020-01-07">{{ accountType.updatedAt }}</time>
+              Cập nhật lần cuối
+              <time datetime="2020-01-07">{{
+                $moment.fromNow(accountType.updatedAt)
+              }}</time>
             </p>
           </div>
         </div>

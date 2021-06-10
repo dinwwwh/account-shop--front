@@ -11,8 +11,9 @@
           placeholder="search..."
         ></SearchBase>
       </div>
+
       <GameList class="mb-4" :games="games"></GameList>
-      <PaginationCenteredNumbers v-model="currentPage" :last-page="7" />
+      <PaginationCenteredNumbers v-model="currentPage" :last-page="lastPage" />
     </FrameBox>
   </div>
 </template>
@@ -20,61 +21,28 @@
 <script>
 export default {
   layout: 'admin',
-  data() {
+  async asyncData({ $axios, query: { page = 1 } }) {
+    const response = await $axios.$get('http://localhost:8000/sanctum/game', {
+      params: {
+        page,
+      },
+    });
     return {
-      currentPage: 4,
-      games: [
-        {
-          id: 1,
-          name: 'lang la',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-        {
-          id: 2,
-          name: 'ngoc rong',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-        {
-          id: 2,
-          name: 'ngoc rong',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-        {
-          id: 2,
-          name: 'ngoc rong',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-        {
-          id: 2,
-          name: 'ngoc rong',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-        {
-          id: 2,
-          name: 'ngoc rong',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-        {
-          id: 2,
-          name: 'ngoc rong',
-          publisherName: 'sohagame',
-          imagePath:
-            'https://images.all-free-download.com/images/graphicthumb/beautiful_scenery_02_hd_picture_166319.jpg',
-        },
-      ],
+      currentPage: response.meta.current_page,
+      lastPage: response.meta.last_page,
+      games: response.data,
     };
   },
+  watch: {
+    currentPage(pageNumber) {
+      this.$router.push({
+        name: this.$route.name,
+        query: {
+          page: pageNumber,
+        },
+      });
+    },
+  },
+  watchQuery: ['page'],
 };
 </script>

@@ -110,8 +110,8 @@
           >
             <div class="px-2 space-y-1">
               <!-- Current: "bg-cyan-800 text-white", Default: "text-cyan-100 hover:text-white hover:bg-cyan-600" -->
-              <a
-                href="#"
+              <NuxtLink
+                :to="{ name: 'game' }"
                 class="
                   bg-cyan-800
                   text-white
@@ -142,8 +142,8 @@
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                   />
                 </svg>
-                Home
-              </a>
+                Game
+              </NuxtLink>
 
               <a
                 href="#"
@@ -460,8 +460,8 @@
           >
             <div class="px-2 space-y-1">
               <!-- Current: "bg-cyan-800 text-white", Default: "text-cyan-100 hover:text-white hover:bg-cyan-600" -->
-              <a
-                href="#"
+              <NuxtLink
+                :to="{ name: 'game' }"
                 class="
                   bg-cyan-800
                   text-white
@@ -493,8 +493,8 @@
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                   />
                 </svg>
-                Home
-              </a>
+                Game
+              </NuxtLink>
 
               <a
                 href="#"
@@ -1064,7 +1064,7 @@
         </div>
       </div>
       <main class="flex-1 relative pb-8 overflow-y-auto min-h-screen">
-        <Nuxt />
+        <Nuxt keep-alive />
       </main>
     </div>
   </div>

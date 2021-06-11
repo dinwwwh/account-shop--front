@@ -132,9 +132,6 @@
           <p v-if="errorMessage" class="mt-1 text-sm text-red-500">
             {{ errorMessage }}
           </p>
-          <p v-if="successMessage" class="mt-1 text-sm text-green-500">
-            {{ successMessage }}
-          </p>
 
           <!-- Button -->
           <div>
@@ -297,22 +294,24 @@ export default {
       email: undefined,
       password: undefined,
       remember: false,
-      successMessage: undefined,
       errorMessage: undefined,
     };
   },
   methods: {
     login() {
+      this.errorMessage = null;
       this.$auth
         .login(this.email, this.password, this.remember)
-        .then((data) => {
-          this.successMessage = 'Đăng nhập thành công!';
-          this.errorMessage = null;
+        .then(() => {
+          if (this.$router.history._startLocation !== this.$route.path) {
+            this.$router.back();
+          } else {
+            this.$router.push({ name: 'index' });
+          }
         })
         .catch(() => {
           this.errorMessage =
             'Thông tin tài khoản, hoặc mật khẩu không chính xác!';
-          this.successMessage = null;
         });
     },
   },

@@ -965,9 +965,10 @@
                       font-medium
                       lg:block
                     "
-                    ><span class="sr-only">Open user menu for </span>Emilia
-                    Birch</span
                   >
+                    <span class="sr-only">Open user menu for </span>
+                    {{ $store.state.auth.profile.name }}
+                  </span>
                   <!-- Heroicon name: solid/chevron-down -->
                   <svg
                     class="
@@ -1022,7 +1023,7 @@
                 aria-orientation="vertical"
                 aria-labelledby="user-menu"
               >
-                <a
+                <!-- <a
                   href="#"
                   class="
                     block
@@ -1045,19 +1046,21 @@
                   "
                   role="menuitem"
                   >Settings</a
-                >
+                > -->
                 <a
-                  href="#"
                   class="
                     block
                     px-4
                     py-2
                     text-sm text-gray-700
                     hover:bg-gray-100
+                    cursor-pointer
                   "
                   role="menuitem"
-                  >Logout</a
+                  @click.prevent="logout"
                 >
+                  Logout
+                </a>
               </div>
             </div>
           </div>
@@ -1072,11 +1075,19 @@
 
 <script>
 export default {
+  middleware: 'auth',
   data() {
     return {
       showDropMenu: false,
       showMobileNav: false,
     };
+  },
+  methods: {
+    logout() {
+      this.$auth.logout().then(() => {
+        this.$router.push({ name: 'login' });
+      });
+    },
   },
 };
 </script>

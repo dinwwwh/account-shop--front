@@ -1,4 +1,6 @@
 export default function ({ $axios, redirect, error }) {
+  $axios.setHeader('Accept', 'application/json');
+
   $axios.onError(({ response }) => {
     if (response === undefined) return;
 

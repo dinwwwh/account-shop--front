@@ -4,6 +4,7 @@
     viewBox="0 0 20 20"
     fill="currentColor"
     aria-hidden="true"
+    v-on="$listeners"
   >
     <path
       fill-rule="evenodd"

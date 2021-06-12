@@ -1,5 +1,5 @@
 export default function ({ store, error }) {
-  if (store.state.auth.authenticated) {
+  if (store.getters['auth/authenticated']) {
     return error(404);
   }
 }

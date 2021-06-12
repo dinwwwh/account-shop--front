@@ -21,8 +21,7 @@ export default {
     '~/plugins/axios',
     '~/plugins/moment',
     '~/plugins/sanctum',
-    '~/plugins/auth.server',
-    '~/plugins/auth.client',
+    '~/plugins/auth',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

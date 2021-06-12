@@ -1,16 +1,21 @@
 export const state = () => ({
-  authenticated: false,
   profile: undefined,
   permissions: [],
 });
 
-export const getters = {};
+export const getters = {
+  authenticated({ profile }) {
+    return !!profile?.name;
+  },
+  permissionKeys({ profile }) {
+    return profile?.permissions.map((permission) => permission.key) ?? [];
+  },
+};
 
 export const actions = {};
 
 export const mutations = {
   user(state, profile) {
-    state.authenticated = !!profile;
     state.profile = profile;
   },
 };

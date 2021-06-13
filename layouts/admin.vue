@@ -1067,7 +1067,7 @@
         </div>
       </div>
       <main class="flex-1 relative pb-8 overflow-y-auto min-h-screen">
-        <Nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+        <Nuxt keep-alive />
       </main>
     </div>
   </div>

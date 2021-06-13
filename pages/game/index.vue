@@ -12,8 +12,8 @@
         ></SearchBase>
       </div>
 
-      <GameList class="mb-4" :games="games"></GameList>
-      <PaginationCenteredNumbers v-model="currentPage" :last-page="lastPage" />
+      <GameList class="mb-4" :games="games" />
+      <PaginationCenteredNumbers v-model="page" :last-page="lastPage" />
     </FrameBox>
   </div>
 </template>
@@ -22,27 +22,49 @@
 export default {
   layout: 'admin',
   async asyncData({ $axios, query: { page = 1 } }) {
-    const response = await $axios.$get('http://localhost:8000/sanctum/game', {
+    const { data, meta } = await $axios.$get('game', {
       params: {
         page,
       },
     });
     return {
-      currentPage: response.meta.current_page,
-      lastPage: response.meta.last_page,
-      games: response.data,
+      lastPage: meta.last_page,
+      games: data,
     };
   },
-  watch: {
-    currentPage(pageNumber) {
-      this.$router.push({
-        name: this.$route.name,
-        query: {
-          page: pageNumber,
-        },
-      });
+  computed: {
+    page: {
+      get() {
+        return parseInt(this.$route.query.page ?? 1);
+      },
+      set(pageNumber) {
+        this.$router.push({
+          name: this.$route.name,
+          query: {
+            page: pageNumber,
+          },
+        });
+      },
     },
   },
-  watchQuery: ['page'],
+  watch: {
+    page() {
+      this.freshGames();
+    },
+  },
+  methods: {
+    freshGames() {
+      this.$nuxt.$loading.start();
+      return this.$axios
+        .$get(`game?page=${this.page}`)
+        .then(({ data }) => {
+          this.$nuxt.$loading.finish();
+          this.games = data;
+        })
+        .catch(() => {
+          this.$nuxt.$loading.fail();
+        });
+    },
+  },
 };
 </script>

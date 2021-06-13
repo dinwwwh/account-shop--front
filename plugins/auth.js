@@ -1,17 +1,20 @@
-export default function ({ $axios, store }, inject) {
+export default function ({ $axios, store: { commit } }, inject) {
   // const { profile } = store.auth.state;
-  const {
-    'auth/permissionKeys': permissionKeys,
-    'auth/authenticated': authenticated,
-  } = store.getters;
+  // const {
+  //   'auth/permissionKeys': permissionKeys,
+  //   'auth/authenticated': authenticated,
+  // } = store.getters;
 
   inject('auth', {
     login,
     logout,
-    hasPermissionTo,
-    hasAnyPermission,
-    hasAllPermissions,
+    can,
+    // hasPermissionTo,
+    // hasAnyPermission,
+    // hasAllPermissions,
+    // canAccessLink,
   });
+  inject('can', can);
 
   async function login(email, password, remember = false) {
     const profile = await $axios.$post('login', {
@@ -19,28 +22,39 @@ export default function ({ $axios, store }, inject) {
       password,
       remember,
     });
-    store.commit('auth/user', profile.data);
+    commit('auth/user', profile.data);
     return profile.data;
   }
 
   function logout() {
     return $axios.post('logout').then(() => {
-      store.commit('auth/user', null);
+      commit('auth/user', null);
     });
   }
 
-  function hasPermissionTo(key) {
-    if (!authenticated) return false;
-    return permissionKeys.includes(key);
-  }
-  function hasAnyPermission(...keys) {
-    if (!authenticated) return false;
-    keys = keys.flat();
-    return keys.some((key) => hasPermissionTo(key));
-  }
-  function hasAllPermissions(...keys) {
-    if (!authenticated) return false;
-    keys = keys.flat();
-    return keys.every((key) => hasPermissionTo(key));
+  // function hasPermissionTo(key) {
+  //   if (!authenticated) return false;
+  //   return permissionKeys.includes(key);
+  // }
+  // function hasAnyPermission(...keys) {
+  //   if (!authenticated) return false;
+  //   keys = keys.flat();
+  //   return keys.some((key) => hasPermissionTo(key));
+  // }
+  // function hasAllPermissions(...keys) {
+  //   if (!authenticated) return false;
+  //   keys = keys.flat();
+  //   return keys.every((key) => hasPermissionTo(key));
+  // }
+
+  function can(ability, params) {
+    return $axios
+      .get(`can/${ability}`, { params: { params } })
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
   }
 }

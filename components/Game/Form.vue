@@ -44,7 +44,11 @@
           <template #description> Hãy nghi những gì bạn thích. </template>
         </TextareaBase>
 
-        <InputBaseAvatar v-model="game.image" rounded="lg">
+        <InputBaseAvatar
+          v-model="game.image"
+          rounded="lg"
+          :image-path="game.imagePath"
+        >
           <template #label>Ảnh đại diện</template>
         </InputBaseAvatar>
 

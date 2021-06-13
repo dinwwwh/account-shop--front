@@ -17,8 +17,8 @@
         :class="`rounded-${rounded}`"
       >
         <img
-          v-if="previewSrc"
-          :src="previewSrc"
+          v-if="previewSrc || imagePath"
+          :src="previewSrc || imagePath"
           alt="avatar"
           class="w-full h-full object-cover object-center"
         />
@@ -74,6 +74,10 @@ export default {
     rounded: {
       type: String,
       default: 'full',
+    },
+    imagePath: {
+      type: String,
+      default: undefined,
     },
   },
   data() {

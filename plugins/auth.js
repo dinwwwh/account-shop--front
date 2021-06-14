@@ -14,7 +14,6 @@ export default function ({ $axios, store: { commit } }, inject) {
     // hasAllPermissions,
     // canAccessLink,
   });
-  inject('can', can);
 
   async function login(email, password, remember = false) {
     const profile = await $axios.$post('login', {

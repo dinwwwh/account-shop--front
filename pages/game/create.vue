@@ -26,8 +26,8 @@
 <script>
 export default {
   layout: 'admin',
-  async middleware({ $can, error }) {
-    if (!(await $can('create', 'game'))) return error(403);
+  async middleware({ $auth, error }) {
+    if (!(await $auth.can('create', 'game'))) return error(403);
   },
   data() {
     return {

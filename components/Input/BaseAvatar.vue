@@ -46,12 +46,16 @@
           leading-4
           font-medium
           text-gray-700
-          hover:bg-gray-50
           focus:outline-none
           focus:ring-2
           focus:ring-offset-2
           focus:ring-indigo-500
         "
+        :class="{
+          'hover:bg-gray-50': canEdit,
+          'cursor-not-allowed bg-gray-200': !canEdit,
+        }"
+        :disabled="!canEdit"
         @click="$refs.file.click()"
       >
         <slot name="button-content">Change</slot>
@@ -78,6 +82,10 @@ export default {
     imagePath: {
       type: String,
       default: undefined,
+    },
+    canEdit: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

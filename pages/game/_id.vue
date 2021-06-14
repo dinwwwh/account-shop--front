@@ -14,9 +14,9 @@
       <div class="mt-8">
         <div class="flex items-center justify-between mb-4">
           <HeadingBase3>Danh sách kiểu tài khoản của game</HeadingBase3>
-          <SearchWithSort placeholder="Search..."></SearchWithSort>
+          <ButtonPrimary>Thêm mới</ButtonPrimary>
         </div>
-
+        <div>xin chao cac ban</div>
         <AccountTypeList :account-types="accountTypes" />
       </div>
     </FrameBox>
@@ -26,11 +26,17 @@
 <script>
 export default {
   layout: 'admin',
-  async asyncData({ $axios, params }) {
-    const response = await $axios.$get(`game/${params.id}`);
+  async asyncData({ $axios, params, $auth }) {
+    const { data: game } = await $axios.$get(`game/${params.id}`);
+    const [canUpdateGame, canCreateAccountType] = await Promise.all([
+      $auth.can('update', `game:${game.id}`),
+      $auth.can('create', `AccountType,Game:${game.id}`),
+    ]);
     return {
-      game: response.data,
-      accountTypes: response.data.accountTypes,
+      game,
+      accountTypes: game.accountTypes,
+      canUpdateGame,
+      canCreateAccountType,
     };
   },
   methods: {

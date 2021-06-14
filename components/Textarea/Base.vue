@@ -19,8 +19,12 @@
           border-gray-300
           rounded-md
         "
+        :class="{
+          'bg-gray-100 cursor-not-allowed': !canEdit,
+        }"
         :placeholder="placeholder"
-      ></textarea>
+        :disabled="!canEdit"
+      />
     </div>
     <!-- Description -->
     <p class="mt-2 text-sm text-gray-500">
@@ -36,6 +40,10 @@ export default {
     event: 'input',
   },
   props: {
+    value: {
+      type: String,
+      required: true,
+    },
     placeholder: {
       type: String,
       default: undefined,
@@ -43,6 +51,10 @@ export default {
     rows: {
       type: Number,
       default: 3,
+    },
+    canEdit: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

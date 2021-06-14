@@ -18,6 +18,7 @@
             <InputBase
               v-model="game.name"
               placeholder="Liên Minh Huyền Thoại..."
+              :can-edit="canEdit"
             >
               <template #label> Tên game </template>
               <template #description> This is a description </template>
@@ -28,7 +29,11 @@
         <!-- Publisher name -->
         <div class="grid grid-cols-3 gap-6">
           <div class="col-span-3 sm:col-span-2">
-            <InputBase v-model="game.publisherName" placeholder="Garena ...">
+            <InputBase
+              v-model="game.publisherName"
+              placeholder="Garena ..."
+              :can-edit="canEdit"
+            >
               <template #label> Tên nhà phát hành </template>
               <template #description> This is a description </template>
             </InputBase>
@@ -39,6 +44,7 @@
         <TextareaBase
           v-model="game.description"
           placeholder="game rat la vui ..."
+          :can-edit="canEdit"
         >
           <template #label> Mô tả game </template>
           <template #description> Hãy nghi những gì bạn thích. </template>
@@ -48,6 +54,7 @@
           v-model="game.image"
           rounded="lg"
           :image-path="game.imagePath"
+          :can-edit="canEdit"
         >
           <template #label>Ảnh đại diện</template>
         </InputBaseAvatar>
@@ -73,6 +80,10 @@ export default {
       default() {
         return {};
       },
+    },
+    canEdit: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {

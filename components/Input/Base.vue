@@ -13,10 +13,12 @@
           'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500':
             !error,
           'border-red-300 focus:border-red-500 focus:ring-red-500': error,
+          'bg-gray-100 cursor-not-allowed': !canEdit,
         }"
         :type="type"
         :value="value"
         :placeholder="placeholder"
+        :disabled="!canEdit"
         @input="changeInput"
       />
 
@@ -87,6 +89,10 @@ export default {
     error: {
       type: null,
       default: false,
+    },
+    canEdit: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

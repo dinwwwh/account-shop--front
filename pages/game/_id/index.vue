@@ -50,19 +50,16 @@ export default {
     updateGame() {
       // this.$axios.get('csrf-cookie');
       this.$axios
-        .$put(
+        .$post(
           `game/${this.game.id}`,
           this.$withFile({
+            _method: 'put',
             order: this.game.order,
             name: this.game.name,
             description: this.game.description,
+            publisherName: this.game.publisherName,
             image: this.game.image,
-          }),
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+          })
         )
         .then(({ data }) => {
           this.game = data;

@@ -1,15 +1,19 @@
 <template>
   <div>
     <UnderHeader :divide-line="true">
-      <HeadingWithAction> Danh sách game này hơi dài </HeadingWithAction>
+      <HeadingWithAction>
+        Danh sách game
+        <template #actions>
+          <NuxtLink :to="{ name: 'game-create' }">
+            <ButtonPrimary>Thêm mới</ButtonPrimary>
+          </NuxtLink>
+        </template>
+      </HeadingWithAction>
     </UnderHeader>
 
     <FrameBox>
       <div class="grid grid-cols-5 mb-8">
-        <SearchBase
-          class="col-start-4 col-span-2"
-          placeholder="search..."
-        ></SearchBase>
+        <SearchBase class="col-start-4 col-span-2" placeholder="search..." />
       </div>
 
       <GameList class="mb-4" :games="games" />

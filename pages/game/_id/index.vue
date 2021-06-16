@@ -1,11 +1,11 @@
 <template>
   <div>
     <FrameBox>
-      <GameForm v-model="game" @submit="updateGame">
+      <GameForm v-model="game" :can-edit="canUpdateGame">
         <template #title> Thông tin game </template>
         <template #description> this is description </template>
         <template #actions>
-          <div class="flex flex-row-reverse">
+          <div v-if="canUpdateGame" class="flex flex-row-reverse">
             <ButtonPrimary @click="updateGame">Cập nhật</ButtonPrimary>
           </div>
         </template>
@@ -14,9 +14,16 @@
       <div class="mt-8">
         <div class="flex items-center justify-between mb-4">
           <HeadingBase3>Danh sách kiểu tài khoản của game</HeadingBase3>
-          <ButtonPrimary>Thêm mới</ButtonPrimary>
+          <NuxtLink
+            v-if="canCreateAccountType"
+            :to="{
+              name: 'game-id-create-account-type',
+              params: { id: $route.params.id },
+            }"
+          >
+            <ButtonPrimary>Thêm mới</ButtonPrimary>
+          </NuxtLink>
         </div>
-        <div>xin chao cac ban</div>
         <AccountTypeList :account-types="accountTypes" />
       </div>
     </FrameBox>
@@ -40,9 +47,27 @@ export default {
     };
   },
   methods: {
-    async updateGame() {
+    updateGame() {
       // this.$axios.get('csrf-cookie');
-      await this.$axios.post('game', this.game);
+      this.$axios
+        .$put(
+          `game/${this.game.id}`,
+          this.$withFile({
+            order: this.game.order,
+            name: this.game.name,
+            description: this.game.description,
+            image: this.game.image,
+          }),
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        )
+        .then(({ data }) => {
+          this.game = data;
+        })
+        .catch(() => {});
     },
   },
 };

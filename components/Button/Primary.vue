@@ -7,7 +7,7 @@
       border border-transparent
       font-medium
       shadow-sm
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+      focus:outline-none focus:ring-2 focus:ring-offset-2
     "
     :class="{
       ' px-2.5 py-1.5  text-xs rounded ': actualSize === 'xs',
@@ -15,7 +15,10 @@
       ' px-4 py-2  text-sm rounded-md ': actualSize === 'base',
       ' px-4 py-2  text-base rounded-md ': actualSize === 'lg',
       ' px-6 py-3  text-base rounded-md ': actualSize === 'xl',
-      'text-white bg-indigo-600 hover:bg-indigo-700': theme === 'indigo',
+      'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500':
+        theme === 'indigo',
+      'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500':
+        theme === 'red',
     }"
     v-on="$listeners"
   >

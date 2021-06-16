@@ -2,12 +2,11 @@
   <div>
     <!-- Label for select tag -->
     <label
-      v-show="label"
       id="listbox-label"
       class="block text-sm font-medium text-gray-700"
       @click="clickedLabel"
     >
-      {{ label }}
+      <slot name="label" />
     </label>
 
     <!-- Select tag -->
@@ -85,7 +84,7 @@
           class="
             absolute
             mt-1
-            w-full
+            min-w-full
             bg-white
             shadow-lg
             max-h-60
@@ -157,14 +156,13 @@
 
     <!-- Description -->
     <p
-      v-if="description"
       class="mt-2 text-sm"
       :class="{
         'text-gray-500': !error,
         'text-red-500': error,
       }"
     >
-      {{ description }}
+      <slot name="description" />
     </p>
   </div>
 </template>
@@ -176,26 +174,20 @@ export default {
     options: {
       type: Array,
       required: true,
+      default() {
+        return [];
+      },
     },
     // Current value transfer by v-model
     value: {
       type: null,
       required: true,
     },
-    // Label of select tag
-    label: {
-      type: [String, Number],
-      default: undefined,
-    },
+
     // Placeholder of select tag
     placeholder: {
       type: [String, Number],
       default: 'Vui lòng chọn một',
-    },
-    // Description of select tag
-    description: {
-      type: [String, Number],
-      default: undefined,
     },
     // Determine value key in option to return it's value for scope parent
     valueKey: {

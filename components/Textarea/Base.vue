@@ -43,6 +43,7 @@ export default {
     value: {
       type: String,
       required: true,
+      default: '',
     },
     placeholder: {
       type: String,

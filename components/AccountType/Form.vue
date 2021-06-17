@@ -17,6 +17,7 @@
           <div class="col-span-3 sm:col-span-2">
             <InputBase
               v-model="modelAccountType.name"
+              :can-edit="canEdit"
               placeholder="Đăng ký ảo..."
             >
               <template #label> Tên </template>
@@ -28,6 +29,7 @@
         <!-- Description -->
         <TextareaBase
           v-model="modelAccountType.description"
+          :can-edit="canEdit"
           placeholder="Không thể lấy lại mật khẩu nếu bạn quên nó ..."
         >
           <template #label> Mô tả kiểu tài khoản </template>
@@ -109,6 +111,10 @@ export default {
         return {};
       },
     },
+    canEdit: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -167,7 +173,7 @@ export default {
       this.modelAccountType.rolesCanUsedAccountType.push(newUsedRole);
     },
     removeUsedRole(index) {
-      this.modelAccountType.rolesCanUsedAccountType.splice(index);
+      this.modelAccountType.rolesCanUsedAccountType.splice(index, 1);
       this.modelAccountType = { ...this.modelAccountType };
     },
   },

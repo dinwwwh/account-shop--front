@@ -127,7 +127,7 @@
 
             <!-- Icon check show when selected -->
             <span
-              v-show="option.value == value"
+              v-show="option.value === value"
               class="absolute inset-y-0 right-0 flex items-center pr-4"
               :class="{
                 'text-white': option.highlighted,

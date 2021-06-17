@@ -13,13 +13,13 @@
     >
       <!-- Elements -->
       <div
-        v-for="(value, i) in values"
-        :key="i"
+        v-for="(option, i) in selectedOptions"
+        :key="option.key"
         class="relative bg-indigo-500 rounded px-2 py-1"
-        @click="removeValue(value)"
+        @click="removeValue(i)"
       >
         <span class="text-white">
-          {{ displayKey ? value[displayKey] : value }}
+          {{ displayKey ? option[displayKey] : option }}
         </span>
         <IconX
           class="
@@ -59,8 +59,8 @@
       <template #title>Danh sách vai trò</template>
       <ul class="mt-8 space-y-2">
         <li
-          v-for="(option, i) in unselectedOptions"
-          :key="i"
+          v-for="option in unselectedOptions"
+          :key="option.key"
           class="
             flex
             items-center
@@ -119,7 +119,13 @@ export default {
     },
     displayKey: {
       type: String,
-      default: null,
+      required: true,
+      default: 'name',
+    },
+    valueKey: {
+      type: String,
+      required: true,
+      default: 'value',
     },
   },
   data() {
@@ -130,18 +136,23 @@ export default {
   computed: {
     unselectedOptions() {
       return this.options.filter(
-        (val) => !this.values.find((val2) => val === val2)
+        (val) => !this.values.includes(val[this.valueKey])
+      );
+    },
+    selectedOptions() {
+      return this.options.filter((val) =>
+        this.values.includes(val[this.valueKey])
       );
     },
   },
   methods: {
-    removeValue(deValue) {
-      const newValues = this.values.filter((val) => val !== deValue);
+    removeValue(index) {
+      const newValues = this.values.filter((val, i) => i !== index);
       this.$emit('change', newValues);
     },
-    addValue(val) {
+    addValue(option) {
       const newValues = this.values;
-      newValues.push(val);
+      newValues.push(option[this.valueKey]);
       this.$emit('change', newValues);
     },
   },

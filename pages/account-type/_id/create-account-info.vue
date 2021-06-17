@@ -1,14 +1,14 @@
 <template>
   <FrameBox>
-    <AccountTypeForm v-model="accountType">
+    <AccountInfoForm v-model="accountInfo">
       <template #actions>
         <div class="flex flex-row-reverse gap-4 items-center">
-          <ButtonPrimary @click="create"> Tạo </ButtonPrimary>
+          <ButtonPrimary @click="create"> Thêm </ButtonPrimary>
           <NuxtLink
-            v-if="createdAccountType"
+            v-if="createdAccountInfo"
             :to="{
-              name: 'account-type-id',
-              params: { id: createdAccountType.id },
+              name: 'account-info-id',
+              params: { id: createdAccountInfo.id },
             }"
           >
             <ButtonPrimary> Truy cập </ButtonPrimary>
@@ -24,36 +24,31 @@
           </p>
         </div>
       </template>
-    </AccountTypeForm>
+    </AccountInfoForm>
   </FrameBox>
 </template>
 
 <script>
 export default {
   layout: 'admin',
-  async middleware({ $auth, error, params }) {
-    if (!(await $auth.can('create', `AccountType,Game:${params.id}`))) {
-      return error(403);
-    }
-  },
   data() {
     return {
-      accountType: {},
+      accountInfo: { rule: {} },
+      createdAccountInfo: undefined,
       message: {
-        error: undefined,
         success: undefined,
+        error: undefined,
       },
-      createdAccountType: undefined,
     };
   },
   methods: {
     create() {
       this.$axios
-        .$post(`account-type/${this.$route.params.id}`, this.accountType)
+        .$post(`account-info/${this.$route.params.id}`, this.accountInfo)
         .then(({ data }) => {
+          this.createdAccountInfo = data;
           this.message.error = null;
           this.message.success = 'Thành công!!';
-          this.createdAccountType = data;
         })
         .catch(() => {
           this.message.error = 'Thất bại :((';

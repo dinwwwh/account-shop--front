@@ -1,18 +1,11 @@
 <template>
   <FrameBox>
-    <AccountTypeForm v-model="accountType">
+    <AccountInfoForm v-model="accountInfo" :can-edit="canUpdateAccountInfo">
       <template #actions>
         <div class="flex flex-row-reverse gap-4 items-center">
-          <ButtonPrimary @click="create"> Tạo </ButtonPrimary>
-          <NuxtLink
-            v-if="createdAccountType"
-            :to="{
-              name: 'account-type-id',
-              params: { id: createdAccountType.id },
-            }"
-          >
-            <ButtonPrimary> Truy cập </ButtonPrimary>
-          </NuxtLink>
+          <ButtonPrimary v-if="canUpdateAccountInfo" @click="update">
+            Cập nhật
+          </ButtonPrimary>
           <p
             class="text-sm"
             :class="{
@@ -24,36 +17,35 @@
           </p>
         </div>
       </template>
-    </AccountTypeForm>
+    </AccountInfoForm>
   </FrameBox>
 </template>
 
 <script>
 export default {
   layout: 'admin',
-  async middleware({ $auth, error, params }) {
-    if (!(await $auth.can('create', `AccountType,Game:${params.id}`))) {
-      return error(403);
-    }
-  },
-  data() {
+  async asyncData({ $axios, $auth, params }) {
+    const [{ data: accountInfo }, canUpdateAccountInfo] = await Promise.all([
+      $axios.$get(`account-info/${params.id}`),
+      $auth.can('update', `AccountInfo:${params.id}`),
+    ]);
     return {
-      accountType: {},
+      accountInfo,
+      canUpdateAccountInfo,
       message: {
-        error: undefined,
         success: undefined,
+        error: undefined,
       },
-      createdAccountType: undefined,
     };
   },
   methods: {
-    create() {
+    update() {
       this.$axios
-        .$post(`account-type/${this.$route.params.id}`, this.accountType)
+        .$put(`account-info/${this.$route.params.id}`, this.accountInfo)
         .then(({ data }) => {
+          this.accountInfo = data;
           this.message.error = null;
           this.message.success = 'Thành công!!';
-          this.createdAccountType = data;
         })
         .catch(() => {
           this.message.error = 'Thất bại :((';

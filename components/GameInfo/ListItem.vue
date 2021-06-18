@@ -1,13 +1,13 @@
 <template>
   <li>
     <NuxtLink
-      :to="`/account-info/${accountInfo.id}`"
+      :to="`/account-info/${gameInfo.id}`"
       class="block hover:bg-gray-50"
     >
       <div class="px-4 py-4 sm:px-6">
         <div class="flex items-center justify-between">
           <p class="text-sm font-medium text-indigo-600 truncate">
-            {{ accountInfo.name }}
+            {{ gameInfo.name }}
           </p>
           <div class="ml-2 flex-shrink-0 flex">
             <p
@@ -51,7 +51,7 @@
             <p>
               Last updated
               <time datetime="2020-01-07">{{
-                $moment.fromNow(accountInfo.updatedAt)
+                $moment.fromNow(gameInfo.updatedAt)
               }}</time>
             </p>
           </div>
@@ -64,8 +64,8 @@
 <script>
 export default {
   props: {
-    // accountInfo object used to render
-    accountInfo: {
+    // gameInfo object used to render
+    gameInfo: {
       type: Object,
       required: true,
     },

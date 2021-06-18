@@ -11,6 +11,7 @@
         </template>
       </GameForm>
 
+      <!-- Account types -->
       <div class="mt-8">
         <div class="flex items-center justify-between mb-4">
           <HeadingBase3>Danh sách kiểu tài khoản của game</HeadingBase3>
@@ -26,6 +27,23 @@
         </div>
         <AccountTypeList :account-types="accountTypes" />
       </div>
+
+      <!-- Game infos -->
+      <div class="mt-8">
+        <div class="flex items-center justify-between mb-4">
+          <HeadingBase3>Danh sách thông tin game</HeadingBase3>
+          <NuxtLink
+            v-if="canCreateGameInfo"
+            :to="{
+              name: 'game-id-create-game-info',
+              params: { id: $route.params.id },
+            }"
+          >
+            <ButtonPrimary>Thêm mới</ButtonPrimary>
+          </NuxtLink>
+        </div>
+        <GameInfoList :game-infos="gameInfos" />
+      </div>
     </FrameBox>
   </div>
 </template>
@@ -35,15 +53,19 @@ export default {
   layout: 'admin',
   async asyncData({ $axios, params, $auth }) {
     const { data: game } = await $axios.$get(`game/${params.id}`);
-    const [canUpdateGame, canCreateAccountType] = await Promise.all([
-      $auth.can('update', `game:${game.id}`),
-      $auth.can('create', `AccountType,Game:${game.id}`),
-    ]);
+    const [canUpdateGame, canCreateAccountType, canCreateGameInfo] =
+      await Promise.all([
+        $auth.can('update', `game:${game.id}`),
+        $auth.can('create', `AccountType,Game:${game.id}`),
+        $auth.can('create', `GameInfo,Game:${game.id}`),
+      ]);
     return {
       game,
       accountTypes: game.accountTypes,
+      gameInfos: game.gameInfos,
       canUpdateGame,
       canCreateAccountType,
+      canCreateGameInfo,
     };
   },
   methods: {

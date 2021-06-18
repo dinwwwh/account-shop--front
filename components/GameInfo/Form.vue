@@ -4,7 +4,7 @@
       <div class="md:col-span-1">
         <!-- Title -->
         <h3 class="text-lg font-medium leading-6 text-gray-900">
-          <slot name="title">Thông tin của kiểu tài khoản</slot>
+          <slot name="title">Thông tin của game</slot>
         </h3>
         <!-- Description -->
         <p class="mt-1 text-sm text-gray-500">
@@ -16,9 +16,9 @@
         <div class="grid grid-cols-3 gap-6">
           <div class="col-span-3 sm:col-span-2">
             <InputBase
-              v-model="accountInfo.name"
+              v-model="gameInfo.name"
               :can-edit="canEdit"
-              placeholder="Số điện thoại, ..."
+              placeholder="Phái, cấp,..."
             >
               <template #label> Tên </template>
             </InputBase>
@@ -27,15 +27,15 @@
 
         <!-- Description -->
         <TextareaBase
-          v-model="accountInfo.description"
+          v-model="gameInfo.description"
           :can-edit="canEdit"
-          placeholder="Là số điện thoại trong nick và rất quan trọng..."
+          placeholder="Là cấp của nhân vật trong game..."
         >
           <template #label> Mô tả </template>
         </TextareaBase>
 
         <!-- Rule -->
-        <RuleInlineForm v-model="accountInfo.rule" :can-edit="canEdit" />
+        <RuleInlineForm v-model="gameInfo.rule" :can-edit="canEdit" />
 
         <!-- Actions -->
         <div>
@@ -49,11 +49,11 @@
 <script>
 export default {
   model: {
-    prop: 'modelAccountInfo',
+    prop: 'modelGameInfo',
     event: 'input',
   },
   props: {
-    modelAccountInfo: {
+    modelGameInfo: {
       type: Object,
       required: true,
       validator(value) {
@@ -67,9 +67,9 @@ export default {
     },
   },
   computed: {
-    accountInfo: {
+    gameInfo: {
       get() {
-        return this.modelAccountInfo;
+        return this.modelGameInfo;
       },
       set(val) {
         this.$emit('input', val);

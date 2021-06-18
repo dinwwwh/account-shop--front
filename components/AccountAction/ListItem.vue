@@ -50,7 +50,9 @@
             <IconCalendarEdit class="mr-1.5 size-lg text-gray-400" />
             <p>
               Last updated
-              <time datetime="2020-01-07">{{ accountAction.updatedAt }}</time>
+              <time datetime="2020-01-07">{{
+                $moment.fromNow(accountAction.updatedAt)
+              }}</time>
             </p>
           </div>
         </div>

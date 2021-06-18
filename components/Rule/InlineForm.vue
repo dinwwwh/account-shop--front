@@ -43,7 +43,7 @@
 
     <!-- Required role keys -->
     <div v-if="rule.required === null" class="space-y-3">
-      <HeadingBase6>Chọn role bắt buộc điền thông tin</HeadingBase6>
+      <HeadingBase6>Chọn role bắt buộc.</HeadingBase6>
       <SelectModernMultiple
         v-model="rule.requiredRoleKeys"
         :options="originalRoles"

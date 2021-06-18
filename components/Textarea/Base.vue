@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { typeCheck } from 'type-check';
+
 export default {
   model: {
     prop: 'value',
@@ -41,7 +43,9 @@ export default {
   },
   props: {
     value: {
-      type: String,
+      validator(val, b) {
+        return typeCheck('String | Null', val);
+      },
       required: true,
       default: '',
     },

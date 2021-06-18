@@ -1,18 +1,14 @@
 <template>
   <FrameBox>
-    <AccountInfoForm v-model="accountInfo">
+    <AccountActionForm
+      v-model="accountAction"
+      :can-edit="canUpdateAccountAction"
+    >
       <template #actions>
         <div class="flex flex-row-reverse gap-4 items-center">
-          <ButtonPrimary @click="create"> Thêm </ButtonPrimary>
-          <NuxtLink
-            v-if="createdAccountInfo"
-            :to="{
-              name: 'account-info-id',
-              params: { id: createdAccountInfo.id },
-            }"
-          >
-            <ButtonPrimary> Truy cập </ButtonPrimary>
-          </NuxtLink>
+          <ButtonPrimary v-if="canUpdateAccountAction" @click="update">
+            Cập nhật
+          </ButtonPrimary>
           <p
             class="text-sm"
             :class="{
@@ -24,21 +20,23 @@
           </p>
         </div>
       </template>
-    </AccountInfoForm>
+    </AccountActionForm>
   </FrameBox>
 </template>
 
 <script>
 export default {
   layout: 'admin',
-  async middleware({ $auth, params, error }) {
-    if (!(await $auth.can('create', `AccountInfo,AccountType:${params.id}`)))
-      return error(403);
-  },
-  data() {
+  async asyncData({ $axios, $auth, params }) {
+    const [{ data: accountAction }, canUpdateAccountAction] = await Promise.all(
+      [
+        $axios.$get(`account-action/${params.id}`),
+        $auth.can('update', `AccountAction:${params.id}`),
+      ]
+    );
     return {
-      accountInfo: { rule: {} },
-      createdAccountInfo: undefined,
+      accountAction,
+      canUpdateAccountAction,
       message: {
         success: undefined,
         error: undefined,
@@ -46,11 +44,11 @@ export default {
     };
   },
   methods: {
-    create() {
+    update() {
       this.$axios
-        .$post(`account-info/${this.$route.params.id}`, this.accountInfo)
+        .$put(`account-action/${this.$route.params.id}`, this.accountAction)
         .then(({ data }) => {
-          this.createdAccountInfo = data;
+          this.accountAction = data;
           this.message.error = null;
           this.message.success = 'Thành công!!';
         })

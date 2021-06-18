@@ -1,4 +1,4 @@
-export default function ({ $axios, redirect, error }, inject) {
+export default function ({ $axios, redirect, error, $typeCheck }, inject) {
   $axios.setHeader('Accept', 'application/json');
 
   inject('withFile', withFile);
@@ -20,13 +20,13 @@ export default function ({ $axios, redirect, error }, inject) {
     // Advanced data please toss it higher than instanceof Object
 
     // Case data is a file
-    if (data instanceof File) {
+    if ($typeCheck('File', data)) {
       formData.append(initKey, data, data.name);
       return formData;
     }
 
     // Case: data is an object
-    else if (data instanceof Object) {
+    else if ($typeCheck('Object', data)) {
       Object.keys(data).forEach((key) => {
         if (initKey) {
           formData = withFile(data[key], formData, `${initKey}[${key}]`);
@@ -37,7 +37,7 @@ export default function ({ $axios, redirect, error }, inject) {
     }
 
     // Case: data is an Array
-    else if (Array.isArray(data)) {
+    else if ($typeCheck('Array', data)) {
       // Case must has initKey
       if (!initKey) {
         // eslint-disable-next-line no-console
@@ -50,8 +50,13 @@ export default function ({ $axios, redirect, error }, inject) {
     }
 
     // Case: data is an String or Number
-    else if (typeof data === 'string' || typeof data === 'number') {
+    else if ($typeCheck('String | Number', data)) {
       formData.append(initKey, data);
+    }
+
+    // Case: data is Boolean type
+    else if ($typeCheck('Boolean', data)) {
+      formData.append(initKey, data ? 1 : 0);
     }
 
     // Case: data is invalid

@@ -20,6 +20,7 @@ export default {
   plugins: [
     '~/plugins/type-check',
     '~/plugins/axios',
+    '~/plugins/vuelidate',
     '~/plugins/moment',
     '~/plugins/sanctum',
     '~/plugins/auth',

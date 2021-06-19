@@ -27,7 +27,8 @@
     "core-js": "^3.9.1",
     "moment": "^2.29.1",
     "nuxt": "^2.15.3",
-    "type-check": "^0.4.0"
+    "type-check": "^0.4.0",
+    "vuelidate": "^0.7.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",

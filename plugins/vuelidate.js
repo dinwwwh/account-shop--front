@@ -1,11 +1,47 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
+import {
+  required,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue,
+  between,
+  alpha,
+  alphaNum,
+  numeric,
+  integer,
+  decimal,
+  email,
+  ipAddress,
+  macAddress,
+  sameAs,
+  url,
+  helpers,
+} from 'vuelidate/lib/validators';
+
 Vue.use(Vuelidate);
-
-export default function (context, inject) {
-  inject('getValidatorErrorMessage', getValidatorErrorMessage);
-}
-
+const validators = {
+  required,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue,
+  between,
+  alpha,
+  alphaNum,
+  numeric,
+  integer,
+  decimal,
+  email,
+  ipAddress,
+  macAddress,
+  sameAs,
+  url,
+  in(values) {
+    return (val) => !helpers.req(val) || values.includes(val);
+  },
+};
 const messages = {
   required: 'là bắt buộc.',
   minLength: 'quá ngắn, vui lòng bổ sung thêm.',
@@ -20,32 +56,25 @@ const messages = {
   decimal: 'có giá trị không hợp lệ',
   email: 'phải là một email hợp lệ.',
   sameAs: 'có giá trị xác nhận không chính xác.',
+  ipAddress: 'phải là một địa chỉ IP hợp lệ.',
+  macAddress: 'phải là một đại chỉ MAC hợp lệ.',
+  url: 'phải là một địa chỉ URL hợp lệ.',
+  in: 'có giá trị không hợp lệ',
 };
+
+export default function (context, inject) {
+  inject('getValidatorErrorMessage', getValidatorErrorMessage);
+  inject('vuelidate', {
+    validators,
+  });
+}
 
 function getValidatorErrorMessage(validator, options) {
   if (!validator.$error) return null;
 
   let errorMessage;
-  const fields = [
-    // Priority group
-    'required',
-    'sameAs',
-    // Advanced group
-    'integer',
-    'alpha',
-    'alphaNum',
-    'numeric',
-    'decimal',
-    'email',
-    // Base group
-    'minLength',
-    'maxLength',
-    'minValue',
-    'maxValue',
-    'between',
-  ];
 
-  fields.some((field) => {
+  Object.keys(validators).some((field) => {
     if (validator[field] === false) {
       errorMessage = `Trường này ${messages[field]}`;
       return true;

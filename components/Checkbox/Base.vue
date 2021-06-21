@@ -17,14 +17,13 @@
 
     <div class="ml-3 text-sm">
       <!-- Label -->
-      <label :for="id" class="font-medium text-gray-700"> {{ label }} </label>
+      <label :for="id" class="font-medium text-gray-700">
+        <slot name="label" />
+      </label>
 
       <!-- Description -->
-      <p
-        v-if="description"
-        :class="{ 'text-gray-500': !error, 'text-red-500': error }"
-      >
-        {{ description }}
+      <p :class="{ 'text-gray-500': !error, 'text-red-500': error }">
+        <slot name="description" />
       </p>
     </div>
   </div>
@@ -46,14 +45,6 @@ export default {
     value: {
       type: null,
       default: true,
-    },
-    label: {
-      type: null,
-      required: true,
-    },
-    description: {
-      type: null,
-      default: undefined,
     },
     // Determine whether this input tag has error
     error: {

@@ -28,7 +28,7 @@
     </div>
 
     <!-- required -->
-    <div class="grid grid-cols-3 gap-6 mb-20">
+    <div class="grid grid-cols-3 gap-6 mb-24">
       <div class="col-span-3 sm:col-span-2">
         <SelectBase
           v-model="rule.required"
@@ -51,6 +51,30 @@
         value-key="key"
       />
     </div>
+
+    <!-- Values -->
+
+    <InputBase
+      v-model="originalValues"
+      :can-edit="canEdit"
+      placeholder="Sever 1|Sever 2|Sever 3 ..."
+    >
+      <template #label> Giới hạn giá trị (optional) </template>
+      <template #description>
+        Nếu bạn sử dụng chức năng này, thì người dùng chỉ được chọn các giá trị
+        trong đây. Mỗi giá trị cách nhau bởi | nếu để trống tức là không sử
+        dụng. Hiện tại đang có {{ lengthOfValues }} giá trị được ghi nhận.
+      </template>
+    </InputBase>
+
+    <!-- Multiple -->
+    <CheckboxBase v-model="rule.multiple" class="mt-4">
+      <template #label> Nhiều giá trị cùng một lúc? </template>
+      <template #description>
+        Quyết định liệu người dùng được phép chọn nhiều giá trị cùng một lúc hay
+        không.
+      </template>
+    </CheckboxBase>
   </div>
 </template>
 
@@ -114,6 +138,25 @@ export default {
       set(val) {
         this.$emit('input', val);
       },
+    },
+    originalValues: {
+      get() {
+        if (!this.$typeCheck('Array', this.rule.values)) {
+          return '';
+        }
+        return this.rule.values.join('|');
+      },
+      set(values) {
+        values = values.split('|');
+        if (!values.length) {
+          this.rule.values = null;
+          return;
+        }
+        this.rule.values = values;
+      },
+    },
+    lengthOfValues() {
+      return this.rule?.values?.length ?? 0;
     },
   },
   watch: {

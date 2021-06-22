@@ -3,15 +3,14 @@
     <div class="flex items-center h-5">
       <input
         :id="id"
-        :value="value"
-        :checked="checked"
+        :checked="value"
         type="checkbox"
         class="h-4 w-4 rounded"
         :class="{
           'text-indigo-600 border-gray-300 focus:ring-indigo-500': !error,
           'text-red-600 border-red-300 focus:ring-red-500': error,
         }"
-        @change="changeInput"
+        @change="value = !value"
       />
     </div>
 
@@ -38,13 +37,8 @@ export default {
   props: {
     // Provide by v-model
     modelValue: {
-      type: null,
-      required: true,
-    },
-    // Contain value of this input tag
-    value: {
-      type: null,
-      default: true,
+      type: Boolean,
+      required: false,
     },
     // Determine whether this input tag has error
     error: {
@@ -58,15 +52,13 @@ export default {
     };
   },
   computed: {
-    // Determine whether checkbox need checked
-    checked() {
-      // Case: this.modelValue is an array
-      if (Array.isArray(this.modelValue)) {
-        return this.modelValue.find((val) => val === this.value);
-      }
-
-      // The rest case
-      return this.modelValue === this.value;
+    value: {
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit('change', val);
+      },
     },
   },
   mounted() {

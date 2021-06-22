@@ -19,6 +19,8 @@
         theme === 'indigo',
       'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500':
         theme === 'red',
+      'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500':
+        theme === 'green',
     }"
     v-on="$listeners"
   >

@@ -1,42 +1,54 @@
 <template>
   <div>
     <template v-if="!$typeCheck('Array', rule.values)">
-      <InputBase
-        v-if="type"
-        v-model="value"
-        :type="type"
-        :error="errorMessage"
-        @input="onInput"
-      >
-        <template #label> <slot name="label" /> </template>
-        <template #description>
-          <template v-if="errorMessage">
-            {{ errorMessage }}
+      <template v-if="!rule.multiple">
+        <InputBase
+          v-if="type"
+          v-model="value"
+          :type="type"
+          :error="errorMessage"
+          @input="onInput"
+        >
+          <template #label> <slot name="label" /> </template>
+          <template #description>
+            <template v-if="errorMessage">
+              {{ errorMessage }}
+            </template>
+            <template v-else>
+              <slot name="description" />
+            </template>
           </template>
-          <template v-else>
-            <slot name="description" />
-          </template>
-        </template>
-      </InputBase>
+        </InputBase>
+      </template>
+      <template v-else>
+        <p class="text-gray-500">
+          Vui lòng liện hệ admin để thoàn hiện phần này
+        </p>
+      </template>
     </template>
     <template v-else>
-      <SelectBase
-        v-model="value"
-        :options="options"
-        display-key="display"
-        value-key="value"
-        :error="errorMessage"
-      >
-        <template #label> <slot name="label" /> </template>
-        <template #description>
-          <template v-if="errorMessage">
-            {{ errorMessage }}
+      <template v-if="!rule.multiple">
+        <SelectBase
+          v-model="value"
+          :options="options"
+          display-key="display"
+          value-key="value"
+          :error="errorMessage"
+        >
+          <template #label> <slot name="label" /> </template>
+          <template #description>
+            <template v-if="errorMessage">
+              {{ errorMessage }}
+            </template>
+            <template v-else>
+              <slot name="description" />
+            </template>
           </template>
-          <template v-else>
-            <slot name="description" />
-          </template>
-        </template>
-      </SelectBase>
+        </SelectBase>
+      </template>
+      <template v-else>
+        Vui lòng liện hệ admin để thoàn hiện phần này
+      </template>
     </template>
   </div>
 </template>
@@ -106,7 +118,7 @@ export default {
   },
   validations() {
     const rule = this.rule;
-    const ruleOfValue = {};
+    let ruleOfValue = {};
     const validators = this.$vuelidate.validators;
 
     if (this.isRequired) {
@@ -119,6 +131,10 @@ export default {
 
     if (this.$typeCheck('Array', rule.values)) {
       ruleOfValue.in = validators.in(rule.values);
+    }
+
+    if (rule.multiple) {
+      ruleOfValue = { $each: ruleOfValue };
     }
 
     return {

@@ -37,7 +37,7 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
     }
 
     // Case: data is an Array
-    else if ($typeCheck('Array', data)) {
+    else if ($typeCheck('Array|FileList', data)) {
       // Case must has initKey
       if (!initKey) {
         // eslint-disable-next-line no-console
@@ -45,7 +45,7 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
         return formData;
       }
       data.forEach((val) => {
-        formData = inject(val, formData, initKey + '[]');
+        formData = withFile(val, formData, initKey + '[]');
       });
     }
 

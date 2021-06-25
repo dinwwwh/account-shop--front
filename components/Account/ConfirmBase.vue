@@ -72,7 +72,9 @@ export default {
   },
   methods: {
     async calculateFee(cost) {
-      const { result } = await this.$axios.$get(
+      const {
+        data: { result },
+      } = await this.$axios.$get(
         `account-type/${this.accountType.id}/calculate-fee?cost=${cost}`
       );
       return result;

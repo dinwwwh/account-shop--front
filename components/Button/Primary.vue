@@ -21,6 +21,8 @@
         theme === 'red',
       'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500':
         theme === 'green',
+      'text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500':
+        theme === 'yellow',
     }"
     v-on="$listeners"
   >

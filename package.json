@@ -26,6 +26,7 @@
     "@tailwindcss/forms": "^0.3.3",
     "core-js": "^3.9.1",
     "create-file-list": "^1.1.0",
+    "format-number": "^3.0.0",
     "moment": "^2.29.1",
     "nuxt": "^2.15.3",
     "type-check": "^0.4.0",

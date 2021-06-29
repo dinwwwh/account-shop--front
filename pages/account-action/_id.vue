@@ -30,7 +30,9 @@ export default {
   async asyncData({ $axios, $auth, params }) {
     const [{ data: accountAction }, canUpdateAccountAction] = await Promise.all(
       [
-        $axios.$get(`account-action/${params.id}`),
+        $axios.$get(`account-action/${params.id}`, {
+          params: { _with: ['requiredRoles'] },
+        }),
         $auth.can('update', `AccountAction:${params.id}`),
       ]
     );

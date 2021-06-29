@@ -74,7 +74,11 @@ export default {
       canCreateAccountInfo,
       canCreateAccountAction,
     ] = await Promise.all([
-      $axios.$get(`account-type/${params.id}`),
+      $axios.$get(`account-type/${params.id}`, {
+        params: {
+          _with: ['accountActions', 'accountInfos', 'rolesCanUsedAccountType'],
+        },
+      }),
       $auth.can('update', `AccountType:${params.id}`),
       $auth.can('create', `AccountInfo,AccountType:${params.id}`),
       $auth.can('create', `AccountAction,AccountType:${params.id}`),

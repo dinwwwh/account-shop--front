@@ -26,7 +26,9 @@ export default {
   layout: 'admin',
   async asyncData({ $axios, $auth, params }) {
     const [{ data: gameInfo }, canUpdateGameInfo] = await Promise.all([
-      $axios.$get(`game-info/show/${params.id}`),
+      $axios.$get(`game-info/show/${params.id}`, {
+        params: { _with: ['rule'] },
+      }),
       $auth.can('update', `GameInfo:${params.id}`),
     ]);
     return {

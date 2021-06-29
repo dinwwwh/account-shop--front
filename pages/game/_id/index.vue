@@ -5,8 +5,20 @@
         <template #title> Thông tin game </template>
         <template #description> this is description </template>
         <template #actions>
-          <div v-if="canUpdateGame" class="flex flex-row-reverse">
+          <div
+            v-if="canUpdateGame"
+            class="flex flex-row-reverse items-center gap-2"
+          >
             <ButtonPrimary @click="updateGame">Cập nhật</ButtonPrimary>
+            <p
+              class="text-sm"
+              :class="{
+                'text-green-500': !message.error,
+                'text-red-500': message.error,
+              }"
+            >
+              {{ message.error || message.success }}
+            </p>
           </div>
         </template>
       </GameForm>
@@ -52,13 +64,19 @@
 export default {
   layout: 'admin',
   async asyncData({ $axios, params, $auth }) {
-    const { data: game } = await $axios.$get(`game/${params.id}`);
-    const [canUpdateGame, canCreateAccountType, canCreateGameInfo] =
-      await Promise.all([
-        $auth.can('update', `game:${game.id}`),
-        $auth.can('create', `AccountType,Game:${game.id}`),
-        $auth.can('create', `GameInfo,Game:${game.id}`),
-      ]);
+    const [
+      { data: game },
+      canUpdateGame,
+      canCreateAccountType,
+      canCreateGameInfo,
+    ] = await Promise.all([
+      $axios.$get(`game/${params.id}`, {
+        params: { _with: ['accountTypes', 'gameInfos'] },
+      }),
+      $auth.can('update', `game:${params.id}`),
+      $auth.can('create', `AccountType,Game:${params.id}`),
+      $auth.can('create', `GameInfo,Game:${params.id}`),
+    ]);
     return {
       game,
       accountTypes: game.accountTypes,
@@ -66,6 +84,10 @@ export default {
       canUpdateGame,
       canCreateAccountType,
       canCreateGameInfo,
+      message: {
+        error: undefined,
+        success: undefined,
+      },
     };
   },
   methods: {
@@ -85,8 +107,13 @@ export default {
         )
         .then(({ data }) => {
           this.game = data;
+          this.message.error = null;
+          this.message.success = 'Thành công!!';
         })
-        .catch(() => {});
+        .catch(() => {
+          this.message.error = 'Thất bại :((';
+          this.message.success = null;
+        });
     },
   },
 };

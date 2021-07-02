@@ -144,7 +144,17 @@ export default {
   layout: 'admin',
   async asyncData({ $axios }) {
     const { data: games } = await $axios.$get(
-      'game/all/usable-to-create-account'
+      'game/all/usable-to-create-account',
+      {
+        params: {
+          _requiredModelRelationships: [
+            'accountTypes.rolesCanUsedAccountType',
+            'accountTypes.accountInfos.rule',
+            'accountTypes.accountActions.requiredRoles',
+            'gameInfos.rule',
+          ],
+        },
+      }
     );
     return {
       // game
@@ -310,6 +320,11 @@ export default {
         accountInfos: this.filledAccountInfos,
         accountActions: this.performedAccountActions,
         gameInfos: this.filledGameInfos,
+        _requiredModelRelationships: [
+          'accountInfos',
+          'gameInfos',
+          'accountActions',
+        ],
       });
       this.$axios
         .$post(`account/${this.selectedAccountType.id}`, data)

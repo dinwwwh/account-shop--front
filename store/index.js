@@ -3,6 +3,7 @@ export const actions = {
     // Init auth
     await $axios
       .$get('profile', {
+        params: { _requiredModelRelationships: ['roles', 'permissions'] },
         validateStatus(status) {
           return true;
         },

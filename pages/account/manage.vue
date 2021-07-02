@@ -26,6 +26,7 @@
         v-model="currentPage"
         class="mt-4"
         :last-page="lastPage"
+        @change="refreshAccounts"
       />
     </FrameBox>
   </div>
@@ -35,18 +36,15 @@
 export default {
   layout: 'admin',
   async asyncData({ $axios }) {
-    const { data: accounts, meta } = await $axios.$get('account/manage/index');
+    const { data: accounts, meta } = await $axios.$get('account/manage/index', {
+      params: { _requiredModelRelationships: ['game'] },
+    });
     return {
       accounts,
       currentPage: meta.current_page,
       lastPage: meta.last_page,
       search: undefined,
     };
-  },
-  watch: {
-    currentPage() {
-      this.refreshAccounts();
-    },
   },
   methods: {
     refreshAccounts() {
@@ -57,6 +55,7 @@ export default {
           params: {
             page: this.currentPage,
             search: this.search,
+            _requiredModelRelationships: ['game'],
           },
         })
         .then(({ data: accounts, meta }) => {

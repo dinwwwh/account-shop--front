@@ -26,7 +26,9 @@ export default {
   layout: 'admin',
   async asyncData({ $axios, $auth, params }) {
     const [{ data: accountInfo }, canUpdateAccountInfo] = await Promise.all([
-      $axios.$get(`account-info/${params.id}`, { params: { _with: ['rule'] } }),
+      $axios.$get(`account-info/${params.id}`, {
+        params: { _requiredModelRelationships: ['rule'] },
+      }),
       $auth.can('update', `AccountInfo:${params.id}`),
     ]);
     return {

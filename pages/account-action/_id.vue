@@ -31,7 +31,7 @@ export default {
     const [{ data: accountAction }, canUpdateAccountAction] = await Promise.all(
       [
         $axios.$get(`account-action/${params.id}`, {
-          params: { _with: ['requiredRoles'] },
+          params: { _requiredModelRelationships: ['requiredRoles'] },
         }),
         $auth.can('update', `AccountAction:${params.id}`),
       ]

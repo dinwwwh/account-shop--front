@@ -76,7 +76,11 @@ export default {
     ] = await Promise.all([
       $axios.$get(`account-type/${params.id}`, {
         params: {
-          _with: ['accountActions', 'accountInfos', 'rolesCanUsedAccountType'],
+          _requiredModelRelationships: [
+            'accountActions',
+            'accountInfos',
+            'rolesCanUsedAccountType',
+          ],
         },
       }),
       $auth.can('update', `AccountType:${params.id}`),
@@ -87,7 +91,7 @@ export default {
     accountType.rolesCanUsedAccountType =
       accountType.rolesCanUsedAccountType.map((role) => ({
         key: role.key,
-        statusCode: role.pivot.status_code,
+        statusCode: role.pivot.statusCode,
       }));
 
     return {

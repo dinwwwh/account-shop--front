@@ -44,8 +44,8 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
         console.error('$axios.withFile() first argument must be an object!');
         return formData;
       }
-      data.forEach((val) => {
-        formData = withFile(val, formData, initKey + '[]');
+      data.forEach((val, key) => {
+        formData = withFile(val, formData, initKey + `[${key}]`);
       });
     }
 

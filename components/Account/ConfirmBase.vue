@@ -17,12 +17,6 @@
         {{ accountType.name }}
       </span>
     </p>
-    <p>
-      Role sử dụng:
-      <span class="font-bold">
-        {{ role.name }}
-      </span>
-    </p>
     <!-- Finally -->
     <p class="font-bold text-red-700">
       Số tiền bạn sẽ nhận được {{ formatNumber()(baseInfos.cost) }} VNĐ sau khi
@@ -49,10 +43,6 @@ export default {
       required: true,
     },
     accountType: {
-      type: Object,
-      required: true,
-    },
-    role: {
       type: Object,
       required: true,
     },

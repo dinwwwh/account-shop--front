@@ -45,7 +45,6 @@ export default {
       this.$axios
         .$put(`account-info/${this.$route.params.id}`, this.accountInfo)
         .then(({ data }) => {
-          this.accountInfo = data;
           this.message.error = null;
           this.message.success = 'Thành công!!';
         })

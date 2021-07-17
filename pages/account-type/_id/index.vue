@@ -79,7 +79,8 @@ export default {
           _requiredModelRelationships: [
             'accountActions',
             'accountInfos',
-            'rolesCanUsedAccountType',
+            'usableUsers',
+            'approvableUsers',
           ],
         },
       }),
@@ -88,11 +89,15 @@ export default {
       $auth.can('create', `AccountAction,AccountType:${params.id}`),
     ]);
 
-    accountType.rolesCanUsedAccountType =
-      accountType.rolesCanUsedAccountType.map((role) => ({
-        key: role.key,
-        statusCode: role.pivot.statusCode,
-      }));
+    accountType.usableUsers = accountType.usableUsers.map((user) => ({
+      id: user.id,
+      statusCode: user.pivot.statusCode,
+    }));
+
+    accountType.approvableUsers = accountType.approvableUsers.map((user) => ({
+      id: user.id,
+      statusCode: user.pivot.statusCode,
+    }));
 
     return {
       canUpdateAccountType,
@@ -114,15 +119,21 @@ export default {
         .$put(`account-type/${this.accountType.id}`, {
           name: this.accountType.name,
           description: this.accountType.description,
-          rolesCanUsedAccountType: this.accountType.rolesCanUsedAccountType,
+          usableUsers: this.accountType.usableUsers,
+          approvableUsers: this.accountType.approvableUsers,
         })
         .then(() => {
           this.message.error = null;
           this.message.success = 'Thành công!!';
         })
-        .catch(() => {
-          this.message.error = 'Thất bại :((';
-          this.message.success = null;
+        .catch(({ response: { status } }) => {
+          if (status === 422) {
+            this.message.error = 'Vui lòng kiểm tra lại thông tin vừa nhập';
+            this.message.success = null;
+          } else {
+            this.message.error = 'Thất bại :((';
+            this.message.success = null;
+          }
         });
     },
   },

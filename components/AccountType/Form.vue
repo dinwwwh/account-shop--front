@@ -36,53 +36,106 @@
           <template #description> Hãy nghi những gì bạn thích. </template>
         </TextareaBase>
 
-        <!-- Roles can used -->
+        <!-- Usable Users -->
         <HeadingBase3 class="mt-4">
-          Nhưng role được phép sử dụng kiểu tài khoản này
+          Users được phép sử dụng kiểu tài khoản này
         </HeadingBase3>
         <table class="table-auto min-w-full">
           <tr>
-            <td class="font-bold text-gray-500">Role</td>
+            <td class="font-bold text-gray-500">ID</td>
             <td class="font-bold text-gray-500">Mã</td>
             <td class="font-bold text-gray-500">Hành động</td>
           </tr>
           <tr
-            v-for="(role, i) in modelAccountType.rolesCanUsedAccountType"
-            :key="role.key"
+            v-for="user in modelAccountType.usableUsers"
+            :key="user.id"
             class="min-w-full"
           >
-            <td>{{ getRoleNameByKey(role.key) }}</td>
-            <td>{{ role.statusCode }}</td>
+            <td>{{ user.id }}</td>
+            <td>{{ user.statusCode }}</td>
             <td>
-              <ButtonPrimary size="xs" theme="red" @click="removeUsedRole(i)"
-                >Xoá</ButtonPrimary
+              <ButtonPrimary
+                size="xs"
+                theme="red"
+                @click="removeUsableUser(user)"
               >
+                Xoá
+              </ButtonPrimary>
             </td>
           </tr>
         </table>
 
-        <!-- Add role can used -->
+        <!-- Add usable users -->
         <div class="flex gap-4 items-end">
-          <!-- Role -->
-          <SelectBase
-            v-model="newUsedRole.key"
-            :options="unselectedRoles"
-            :display-key="'name'"
-            :value-key="'key'"
-          >
-            <template #label> Vai trò </template>
-          </SelectBase>
+          <!-- user -->
+          <InputBase v-model="newUsableUser.id" placeholder="ID user">
+            <template #label> ID người dùng </template>
+          </InputBase>
           <!-- Code -->
           <SelectBase
-            v-model="newUsedRole.statusCode"
-            :options="statusCodes"
+            v-model="newUsableUser.statusCode"
+            :options="statusCodesForUse"
             :display-key="'description'"
             :value-key="'statusCode'"
           >
             <template #label> Mã </template>
           </SelectBase>
           <div class="pb-2">
-            <ButtonPrimary size="sm" @click="addNewUsedRole">
+            <ButtonPrimary size="sm" @click="addUsableUser">
+              Thêm
+            </ButtonPrimary>
+          </div>
+        </div>
+
+        <!-- approvable Users -->
+        <HeadingBase3 class="mt-4">
+          Users được phép phê duyệt nick được tạo từ kiểu tài khoản này
+        </HeadingBase3>
+        <table class="table-auto min-w-full">
+          <tr>
+            <td class="font-bold text-gray-500">ID</td>
+            <td class="font-bold text-gray-500">Mã</td>
+            <td class="font-bold text-gray-500">Hành động</td>
+          </tr>
+          <tr
+            v-for="user in modelAccountType.approvableUsers"
+            :key="user.id"
+            class="min-w-full"
+          >
+            <td>{{ user.id }}</td>
+            <td>{{ user.statusCode }}</td>
+            <td>
+              <ButtonPrimary
+                size="xs"
+                theme="red"
+                @click="removeApprovableUser(user)"
+              >
+                Xoá
+              </ButtonPrimary>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Add approvable users -->
+        <div class="flex gap-4 items-end">
+          <!-- user -->
+          <InputBase v-model="newApprovableUser.id" placeholder="ID user">
+            <template #label> ID người dùng </template>
+          </InputBase>
+          <!-- Code -->
+          <SelectBase
+            v-model="newApprovableUser.statusCode"
+            :options="statusCodesForApproval"
+            :display-key="'description'"
+            :value-key="'statusCode'"
+          >
+            <template #label> Mã </template>
+            <template #description>
+              Mã nick sau khi phê duyệt thành công
+            </template>
+          </SelectBase>
+          <div class="pb-2">
+            <ButtonPrimary size="sm" @click="addApprovableUser">
               Thêm
             </ButtonPrimary>
           </div>
@@ -118,9 +171,9 @@ export default {
   },
   data() {
     return {
-      plainRoles: [],
-      newUsedRole: {},
-      statusCodes: [
+      newUsableUser: {},
+      newApprovableUser: {},
+      statusCodesForUse: [
         {
           statusCode: 0,
           description: '0: Bình thường, đăng nick phải duyệt.',
@@ -130,10 +183,13 @@ export default {
           description: '440: Đăng nick không cần duyệt.',
         },
       ],
+      statusCodesForApproval: [
+        {
+          statusCode: 480,
+          description: '480: không ai coi được tt trừ adm.',
+        },
+      ],
     };
-  },
-  async fetch() {
-    this.plainRoles = (await this.$axios.$get('role')).data;
   },
   computed: {
     modelAccountType: {
@@ -144,37 +200,49 @@ export default {
         this.$emit('input', val);
       },
     },
-
-    unselectedRoles: {
-      cache: false,
-      get() {
-        const selectedRoles = this.accountType.rolesCanUsedAccountType;
-        if (!selectedRoles) return this.plainRoles;
-        return this.plainRoles.filter(
-          (plainRole) =>
-            !selectedRoles.find(
-              (selectedRole) => selectedRole.key === plainRole.key
-            )
-        );
-      },
-    },
   },
   methods: {
-    getRoleNameByKey(key) {
-      return this.plainRoles.find((role) => role.key === key)?.name;
-    },
-    addNewUsedRole() {
-      const newUsedRole = { ...this.newUsedRole };
-      this.newUsedRole = {};
+    addUsableUser() {
+      const newUsableUser = { ...this.newUsableUser };
+      this.newUsableUser = {};
 
-      if (!this.modelAccountType.rolesCanUsedAccountType) {
-        this.modelAccountType.rolesCanUsedAccountType = [];
+      if (!this.modelAccountType.usableUsers) {
+        this.modelAccountType.usableUsers = [];
       }
-      this.modelAccountType.rolesCanUsedAccountType.push(newUsedRole);
+
+      if (
+        !this.modelAccountType.usableUsers.find(
+          (user) => user.id === newUsableUser.id
+        )
+      ) {
+        this.modelAccountType.usableUsers.push(newUsableUser);
+      }
     },
-    removeUsedRole(index) {
-      this.modelAccountType.rolesCanUsedAccountType.splice(index, 1);
-      this.modelAccountType = { ...this.modelAccountType };
+    removeUsableUser(user) {
+      this.modelAccountType.usableUsers =
+        this.modelAccountType.usableUsers.filter(({ id }) => id !== user.id);
+    },
+    addApprovableUser() {
+      const newApprovableUser = { ...this.newApprovableUser };
+      this.newApprovableUser = {};
+
+      if (!this.modelAccountType.approvableUsers) {
+        this.modelAccountType.approvableUsers = [];
+      }
+
+      if (
+        !this.modelAccountType.approvableUsers.find(
+          (user) => user.id === newApprovableUser.id
+        )
+      ) {
+        this.modelAccountType.approvableUsers.push(newApprovableUser);
+      }
+    },
+    removeApprovableUser(user) {
+      this.modelAccountType.approvableUsers =
+        this.modelAccountType.approvableUsers.filter(
+          ({ id }) => id !== user.id
+        );
     },
   },
 };

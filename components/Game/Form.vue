@@ -53,7 +53,7 @@
         <InputBaseAvatar
           v-model="game.image"
           rounded="lg"
-          :image-path="game.imagePath"
+          :image-path="representativeImage.path"
           :can-edit="canEdit"
         >
           <template #label>Ảnh đại diện</template>
@@ -94,6 +94,9 @@ export default {
       set(val) {
         this.$emit('input', val);
       },
+    },
+    representativeImage() {
+      return this.game.representativeImage ?? {};
     },
   },
 };

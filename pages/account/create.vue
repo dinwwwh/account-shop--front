@@ -5,7 +5,7 @@
         <StepsCircles
           class="mx-auto"
           :current-step="currentStep"
-          :last-step="8"
+          :last-step="7"
         />
       </div>
 
@@ -28,19 +28,8 @@
         />
       </div>
 
-      <!-- STEP - 3: Select role -->
+      <!-- STEP - 3: Fill game info -->
       <div v-if="currentStep === 3" class="space-y-8">
-        <HeadingBase3 class="text-center">
-          Vui lòng chọn vai trò được sử dụng để đăng nick
-        </HeadingBase3>
-        <RoleFormSelectSelfs
-          v-model="selectedRole"
-          :roles="rolesCanUseBySelectedAccountType"
-        />
-      </div>
-
-      <!-- STEP - 4: Fill game info -->
-      <div v-if="currentStep === 4" class="space-y-8">
         <HeadingBase3 class="text-center">
           Vui lòng điền thông tin game
         </HeadingBase3>
@@ -51,8 +40,8 @@
         />
       </div>
 
-      <!-- STEP - 5:  Perform account action -->
-      <div v-if="currentStep === 5" class="space-y-8">
+      <!-- STEP - 4:  Perform account action -->
+      <div v-if="currentStep === 4" class="space-y-8">
         <HeadingBase3 class="text-center">
           Vui lòng thực hiện các hành động dưới đây
         </HeadingBase3>
@@ -63,8 +52,8 @@
         />
       </div>
 
-      <!-- STEP - 6: Fill account infos -->
-      <div v-if="currentStep === 6" class="space-y-8">
+      <!-- STEP - 5: Fill account infos -->
+      <div v-if="currentStep === 5" class="space-y-8">
         <HeadingBase3 class="text-center">
           Vui lòng điền thông tin tài khoản
         </HeadingBase3>
@@ -75,8 +64,8 @@
         />
       </div>
 
-      <!-- STEP - 7: Fill base infos -->
-      <div v-if="currentStep === 7" class="space-y-8">
+      <!-- STEP - 6: Fill base infos -->
+      <div v-if="currentStep === 6" class="space-y-8">
         <HeadingBase3 class="text-center">
           Vui lòng điền thông tin tài khoản - II
         </HeadingBase3>
@@ -87,24 +76,23 @@
       </div>
 
       <!-- STEP - 7: Confirm -->
-      <div v-if="currentStep === 8" class="space-y-8">
+      <div v-if="currentStep === 7" class="space-y-8">
         <HeadingBase3 class="text-center"> Xác nhận nào </HeadingBase3>
         <AccountConfirmBase
           :game="selectedGame"
           :account-type="selectedAccountType"
           :base-infos="filledBaseInfos"
-          :role="selectedRole"
         />
       </div>
 
       <!-- Actions -->
       <div class="flex flex-row-reverse items-center gap-4">
         <!-- Next step -->
-        <ButtonPrimary v-if="currentStep < 8" @click="hopNextStep">
+        <ButtonPrimary v-if="currentStep < 7" @click="hopNextStep">
           Tiếp theo
         </ButtonPrimary>
         <!-- Confirm -->
-        <ButtonPrimary v-if="currentStep === 8" theme="green" @click="create">
+        <ButtonPrimary v-if="currentStep === 7" theme="green" @click="create">
           Xác nhận, và đăng nick lên shop
         </ButtonPrimary>
         <!-- Previous step -->
@@ -143,29 +131,25 @@ import { required } from 'vuelidate/lib/validators';
 export default {
   layout: 'admin',
   async asyncData({ $axios }) {
-    const { data: games } = await $axios.$get(
-      'game/all/usable-to-create-account',
-      {
-        params: {
-          _requiredModelRelationships: [
-            'accountTypes.rolesCanUsedAccountType',
-            'accountTypes.accountInfos.rule',
-            'accountTypes.accountActions.requiredRoles',
-            'gameInfos.rule',
-          ],
-        },
-      }
-    );
+    const { data: games } = await $axios.$get('game/all/usable', {
+      params: {
+        _requiredModelRelationships: [
+          'accountTypes.usableUsers',
+          'accountTypes.accountInfos.rule',
+          'accountTypes.accountActions.rule',
+          'gameInfos.rule',
+          'representativeImage',
+        ],
+      },
+    });
     return {
       // game
       games,
       selectedGame: undefined,
       // account type
       selectedAccountType: undefined,
-      // role
-      selectedRole: undefined,
       // game infos
-      filledGameInfos: {},
+      filledGameInfos: undefined,
       panelOfFilledGameInfos: [],
       // account actions
       performedAccountActions: {},
@@ -191,21 +175,10 @@ export default {
     // Change according to selectedGame
     // Used in step 2 - select account type
     usableAccountTypes() {
-      const accountTypes = this.selectedGame?.accountTypes ?? [];
-      const rolesUserHave = this.$store.state.auth.profile.roles;
-      return accountTypes.filter(({ rolesCanUsedAccountType }) =>
-        rolesCanUsedAccountType.some((usableRole) =>
-          rolesUserHave.some((roleUserHas) => roleUserHas.id === usableRole.id)
+      return this.selectedGame.accountTypes.filter((accountType) =>
+        accountType.usableUsers.find(
+          (user) => user.id === this.$store.state.auth.profile.id
         )
-      );
-    },
-    // Include roles can use it to create account
-    // Change according to selectedAccountType
-    // Used in step 3 - select role
-    rolesCanUseBySelectedAccountType() {
-      const rolesUserHave = this.$store.state.auth.profile.roles;
-      return this.selectedAccountType.rolesCanUsedAccountType.filter((role) =>
-        rolesUserHave.some((roleUserHas) => roleUserHas.id === role.id)
       );
     },
   },
@@ -216,12 +189,8 @@ export default {
     selectedAccountType: {
       required,
     },
-    selectedRole: {
-      required,
-    },
     stepOne: ['selectedGame'],
     stepTwo: ['selectedAccountType'],
-    stepThree: ['selectedRole'],
   },
   methods: {
     hopNextStep() {
@@ -248,19 +217,8 @@ export default {
         }
       }
 
-      // Validate step 3
+      // Validate step 3 - fill game infos
       else if (this.currentStep === 3) {
-        this.$v.stepThree.$touch();
-
-        if (this.$v.stepThree.$error) {
-          this.message.error =
-            'Vui lòng chọn role mà bạn muốn sử dụng để đăng nick.';
-          return;
-        }
-      }
-
-      // Validate step 4 - fill game infos
-      else if (this.currentStep === 4) {
         const validatedStep4Result = this.panelOfFilledGameInfos.check();
         if (validatedStep4Result.isPending) {
           this.message.warn = 'Hãy đợi thêm trước khi tiếp tục.';
@@ -271,8 +229,8 @@ export default {
         }
       }
 
-      // Validate step 5 - perform account actions
-      else if (this.currentStep === 5) {
+      // Validate step 4 - perform account actions
+      else if (this.currentStep === 4) {
         const validatedStep5Result =
           this.panelOfPerformedAccountActions.check();
         if (validatedStep5Result.isPending) {
@@ -284,8 +242,8 @@ export default {
         }
       }
 
-      // Validate step 6 - fill account infos
-      else if (this.currentStep === 6) {
+      // Validate step 5 - fill account infos
+      else if (this.currentStep === 5) {
         const validatedStep6Result = this.panelOfFilledAccountInfos.check();
         if (validatedStep6Result.isPending) {
           this.message.warn = 'Hãy đợi thêm trước khi tiếp tục.';
@@ -296,8 +254,8 @@ export default {
         }
       }
 
-      // Validate step 7 - fill account infos
-      else if (this.currentStep === 7) {
+      // Validate step 6 - fill account infos
+      else if (this.currentStep === 6) {
         const validatedStep7Result = this.panelOfFilledBaseInfos.check();
         if (validatedStep7Result.isPending) {
           this.message.warn = 'Hãy đợi thêm trước khi tiếp tục.';
@@ -316,7 +274,6 @@ export default {
     create() {
       const data = this.$withFile({
         ...this.filledBaseInfos,
-        roleKey: this.selectedRole.key,
         accountInfos: this.filledAccountInfos,
         accountActions: this.performedAccountActions,
         gameInfos: this.filledGameInfos,

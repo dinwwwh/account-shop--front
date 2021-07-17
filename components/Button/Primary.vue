@@ -2,12 +2,12 @@
   <button
     type="button"
     class="
+      focus:outline-none focus:ring-2 focus:ring-offset-2
       inline-flex
       items-center
-      border border-transparent
       font-medium
+      border border-transparent
       shadow-sm
-      focus:outline-none focus:ring-2 focus:ring-offset-2
     "
     :class="{
       ' px-2.5 py-1.5  text-xs rounded ': actualSize === 'xs',

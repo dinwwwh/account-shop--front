@@ -68,7 +68,7 @@
 export default {
   model: {
     prop: 'currentPage',
-    event: 'changed',
+    event: 'change',
   },
   props: {
     // last page number
@@ -144,7 +144,7 @@ export default {
       this.previousPage = this.currentPage > 1 ? this.currentPage - 1 : null;
     },
     changePage(pageNumber) {
-      this.$emit('changed', pageNumber);
+      this.$emit('change', pageNumber);
     },
   },
 };

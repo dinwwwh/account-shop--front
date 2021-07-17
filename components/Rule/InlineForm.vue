@@ -41,15 +41,18 @@
       </div>
     </div>
 
-    <!-- Required role keys -->
-    <div v-if="rule.required === null" class="space-y-3">
-      <HeadingBase6>Chọn role bắt buộc.</HeadingBase6>
-      <SelectModernMultiple
-        v-model="rule.requiredRoleKeys"
-        :options="originalRoles"
-        display-key="name"
-        value-key="key"
-      />
+    <div v-if="rule.required === true" class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">
+        Những người dùng không bắt buộc
+      </label>
+      <UserSelect v-model="rule.unrequiredUserIds" />
+    </div>
+
+    <div v-if="rule.required === false" class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">
+        Những người dùng bắt buộc
+      </label>
+      <UserSelect v-model="rule.requiredUserIds" />
     </div>
 
     <!-- Values -->
@@ -120,10 +123,6 @@ export default {
           name: 'Không bắt buộc',
           value: false,
         },
-        {
-          name: 'Tuỳ theo role',
-          value: null,
-        },
       ],
     };
   },
@@ -159,16 +158,10 @@ export default {
       return this.rule?.values?.length ?? 0;
     },
   },
-  watch: {
-    modelRule() {
-      this.rule.requiredRoleKeys = this.rule.requiredRoles?.map(
-        (role) => role.key
-      );
-    },
-  },
   created() {
-    this.rule.requiredRoleKeys = this.rule.requiredRoles?.map(
-      (role) => role.key
+    this.rule.requiredUserIds = this.rule.requiredUsers?.map((user) => user.id);
+    this.rule.unrequiredUserIds = this.rule.unrequiredUsers?.map(
+      (user) => user.id
     );
   },
 };

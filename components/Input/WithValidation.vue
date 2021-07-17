@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { generateValidatorsFromRule } from '~/utils/validation';
+
 export default {
   model: {
     prop: 'modelValue',
@@ -92,22 +94,6 @@ export default {
 
       return undefined;
     },
-    isRequired() {
-      const rolesAuthHave = this.$store.state.auth.profile.roles;
-      // case is boolean variable
-      if (this.$typeCheck('Boolean', this.rule.required)) {
-        return this.rule.required;
-      }
-      // case equal null -> determine by requiredRoles
-      else if (this.rule.required === null) {
-        for (const requiredRole of this.rule.requiredRoles) {
-          for (const roleAuthHas of rolesAuthHave) {
-            if (requiredRole.id === roleAuthHas.id) return true;
-          }
-        }
-      }
-      return false;
-    },
     errorMessage() {
       return this.$getValidatorErrorMessage(this.$v.value);
     },
@@ -117,28 +103,8 @@ export default {
     },
   },
   validations() {
-    const rule = this.rule;
-    let ruleOfValue = {};
-    const validators = this.$vuelidate.validators;
-
-    if (this.isRequired) {
-      ruleOfValue.required = validators.required;
-    }
-
-    if (rule.datatype === 'integer') {
-      ruleOfValue.integer = validators.integer;
-    }
-
-    if (this.$typeCheck('Array', rule.values)) {
-      ruleOfValue.in = validators.in(rule.values);
-    }
-
-    if (rule.multiple) {
-      ruleOfValue = { $each: ruleOfValue };
-    }
-
     return {
-      value: ruleOfValue,
+      value: this.generateValidatorsFromRule(this.rule),
     };
   },
   watch: {
@@ -156,6 +122,7 @@ export default {
     onInput() {
       if (this.isTouchAuto) this.$v.value.$touch();
     },
+    generateValidatorsFromRule,
   },
 };
 </script>

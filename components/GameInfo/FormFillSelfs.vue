@@ -2,9 +2,10 @@
   <div>
     <div v-for="(gameInfo, i) in gameInfos" :key="gameInfo.id">
       <InputWithValidation
-        v-model="filledGameInfos[`id${gameInfo.id}`]"
+        :model-value="get(gameInfo)"
         :rule="gameInfo.rule"
         :is-touch-auto="isTouchAuto"
+        @input="set(gameInfo, $event)"
         @emitted-validator-panel="mergeValidatorPanels($event, i)"
       >
         <template #label>{{ gameInfo.name }}</template>
@@ -24,6 +25,11 @@ export default {
     modelGameInfos: {
       type: Object,
       required: true,
+      default() {
+        const val = {};
+        this.$emit('input', val);
+        return val;
+      },
     },
     gameInfos: {
       type: Array,
@@ -77,10 +83,24 @@ export default {
   },
   created() {
     this.$emit('emit-panel', this.panel);
+    // this.gameInfos.forEach(({ id }) => {
+    //   this.filledGameInfos[id] = { value: null };
+    // });
   },
   methods: {
     mergeValidatorPanels($v, index) {
       this.validatorPanels[index] = $v;
+    },
+    set(gameInfo, val) {
+      if (!this.filledGameInfos[gameInfo.id]) {
+        this.filledGameInfos[gameInfo.id] = { value: val };
+      } else {
+        this.filledGameInfos[gameInfo.id].value = val;
+      }
+      this.$forceUpdate();
+    },
+    get(gameInfo) {
+      return this.filledGameInfos[gameInfo.id]?.value;
     },
   },
 };

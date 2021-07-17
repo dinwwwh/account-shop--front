@@ -37,7 +37,9 @@ export default {
   layout: 'admin',
   async asyncData({ $axios }) {
     const { data: accounts, meta } = await $axios.$get('account/manage/index', {
-      params: { _requiredModelRelationships: ['game'] },
+      params: {
+        _requiredModelRelationships: ['accountType.game.representativeImage'],
+      },
     });
     return {
       accounts,
@@ -55,7 +57,9 @@ export default {
           params: {
             page: this.currentPage,
             search: this.search,
-            _requiredModelRelationships: ['game'],
+            _requiredModelRelationships: [
+              'accountType.game.representativeImage',
+            ],
           },
         })
         .then(({ data: accounts, meta }) => {

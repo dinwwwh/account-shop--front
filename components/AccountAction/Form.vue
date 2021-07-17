@@ -48,10 +48,10 @@
         </div>
 
         <!-- required -->
-        <div class="grid grid-cols-3 gap-6 pb-20">
+        <div class="grid grid-cols-3 gap-6 mb-24">
           <div class="col-span-3 sm:col-span-2">
             <SelectBase
-              v-model="accountAction.required"
+              v-model="accountAction.rule.required"
               :options="requiredOptions"
               display-key="name"
               value-key="value"
@@ -61,15 +61,18 @@
           </div>
         </div>
 
-        <!-- Required role keys -->
-        <div v-if="accountAction.required === null" class="space-y-3">
-          <HeadingBase6>Chọn role bắt buộc thực hiện </HeadingBase6>
-          <SelectModernMultiple
-            v-model="accountAction.requiredRoleKeys"
-            :options="originalRoles"
-            display-key="name"
-            value-key="key"
-          />
+        <div v-if="accountAction.rule.required === true" class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">
+            Những người dùng không bắt buộc
+          </label>
+          <UserSelect v-model="accountAction.rule.unrequiredUserIds" />
+        </div>
+
+        <div v-if="accountAction.rule.required === false" class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">
+            Những người dùng bắt buộc
+          </label>
+          <UserSelect v-model="accountAction.rule.requiredUserIds" />
         </div>
 
         <!-- Actions -->
@@ -129,22 +132,14 @@ export default {
       },
     },
   },
-  watch: {
-    accountAction() {
-      this.initializeRequiredRoleKeys();
-    },
-  },
   created() {
-    this.initializeRequiredRoleKeys();
-  },
-  methods: {
-    change() {
-      this.accountAction = { rule: {} };
-    },
-    initializeRequiredRoleKeys() {
-      this.accountAction.requiredRoleKeys =
-        this.accountAction.requiredRoles?.map((role) => role.key);
-    },
+    if (!this.$typeCheck('Object', this.accountAction.rule)) {
+      this.accountAction.rule = {};
+    }
+    this.accountAction.rule.requiredUserIds =
+      this.accountAction.rule.requiredUsers?.map((user) => user.id);
+    this.accountAction.rule.unrequiredUserIds =
+      this.accountAction.rule.unrequiredUsers?.map((user) => user.id);
   },
 };
 </script>

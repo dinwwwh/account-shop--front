@@ -30,7 +30,9 @@
               <ButtonPrimary
                 theme="green"
                 @click="
-                  performedAccountActions[`id${accountAction.id}`] = true;
+                  performedAccountActions[`${accountAction.id}`] = {
+                    isDone: true,
+                  };
                   accountAction.isDone = true;
                 "
               >
@@ -41,7 +43,9 @@
               <ButtonPrimary
                 theme="red"
                 @click="
-                  performedAccountActions[`id${accountAction.id}`] = false;
+                  performedAccountActions[`${accountAction.id}`] = {
+                    isDone: false,
+                  };
                   accountAction.isDone = false;
                 "
               >
@@ -117,20 +121,17 @@ export default {
   },
   methods: {
     isRequired(accountAction) {
-      const rolesAuthHave = this.$store.state.auth.profile.roles;
-      // case is boolean variable
-      if (this.$typeCheck('Boolean', accountAction.required)) {
-        return accountAction.required;
-      }
-      // case equal null -> determine by requiredRoles
-      else if (accountAction.required === null) {
-        for (const requiredRole of accountAction.requiredRoles) {
-          for (const roleAuthHas of rolesAuthHave) {
-            if (requiredRole.id === roleAuthHas.id) return true;
-          }
+      const rule = accountAction.rule;
+      const user = this.$store.state.auth.profile;
+      let isRequired = false;
+      if (rule.required) {
+        if (!rule.unrequiredUsers.find(({ id }) => id === user.id)) {
+          isRequired = true;
         }
+      } else if (rule.requiredUsers.find(({ id }) => id === user.id)) {
+        isRequired = true;
       }
-      return false;
+      return isRequired;
     },
     isInvalid(accountAction) {
       if (this.isRequired(accountAction) && !accountAction.isDone) return true;
@@ -141,7 +142,7 @@ export default {
       this.customizedAccountActions = this.accountActions.map(
         (accountAction) => ({
           ...accountAction,
-          isDone: !!this.performedAccountActions[`id${accountAction.id}`],
+          isDone: !!this.performedAccountActions[`${accountAction.id}`],
         })
       );
     },

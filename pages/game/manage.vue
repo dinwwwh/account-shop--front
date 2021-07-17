@@ -29,6 +29,7 @@ export default {
     const { data, meta } = await $axios.$get('game', {
       params: {
         page,
+        _requiredModelRelationships: ['representativeImage'],
       },
     });
     return {

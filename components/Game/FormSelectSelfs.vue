@@ -25,7 +25,11 @@
       @click="selectGame(game)"
     >
       <div class="flex-shrink-0">
-        <img class="h-10 w-10 rounded-full" :src="game.imagePath" alt="" />
+        <img
+          class="h-10 w-10 rounded-full"
+          :src="game.representativeImage.path"
+          alt=""
+        />
       </div>
       <div class="flex-1 min-w-0">
         <a href="#" class="focus:outline-none">

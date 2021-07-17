@@ -7,7 +7,7 @@
       <div class="flex-shrink-0">
         <img
           class="h-12 w-12 rounded-full"
-          :src="game.imagePath"
+          :src="representativeImage.path"
           alt="avatar"
         />
       </div>
@@ -97,6 +97,11 @@ export default {
     game: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    representativeImage() {
+      return this.game.representativeImage ?? {};
     },
   },
 };

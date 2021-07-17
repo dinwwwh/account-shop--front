@@ -2,9 +2,10 @@
   <div>
     <div v-for="(accountInfo, i) in accountInfos" :key="accountInfo.id">
       <InputWithValidation
-        v-model="filledAccountInfos[`id${accountInfo.id}`]"
+        :model-value="get(accountInfo)"
         :rule="accountInfo.rule"
         :is-touch-auto="isTouchAuto"
+        @input="set(accountInfo, $event)"
         @emitted-validator-panel="mergeValidatorPanels($event, i)"
       >
         <template #label>{{ accountInfo.name }}</template>
@@ -24,6 +25,11 @@ export default {
     model: {
       type: Object,
       required: true,
+      default() {
+        const val = {};
+        this.$$emit('input', val);
+        return val;
+      },
     },
     accountInfos: {
       type: Array,
@@ -77,6 +83,17 @@ export default {
   methods: {
     mergeValidatorPanels($v, index) {
       this.validatorPanels[index] = $v;
+    },
+    get(accountInfo) {
+      return this.filledAccountInfos[accountInfo.id]?.value;
+    },
+    set(accountInfo, value) {
+      if (!this.filledAccountInfos[accountInfo.id]) {
+        this.filledAccountInfos[accountInfo.id] = { value };
+      } else {
+        this.filledAccountInfos[accountInfo.id].value = value;
+      }
+      this.$forceUpdate();
     },
   },
 };

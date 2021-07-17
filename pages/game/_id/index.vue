@@ -71,7 +71,13 @@ export default {
       canCreateGameInfo,
     ] = await Promise.all([
       $axios.$get(`game/${params.id}`, {
-        params: { _requiredModelRelationships: ['accountTypes', 'gameInfos'] },
+        params: {
+          _requiredModelRelationships: [
+            'accountTypes',
+            'gameInfos',
+            'representativeImage',
+          ],
+        },
       }),
       $auth.can('update', `game:${params.id}`),
       $auth.can('create', `AccountType,Game:${params.id}`),

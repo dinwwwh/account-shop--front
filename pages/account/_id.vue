@@ -14,17 +14,19 @@
     <!-- Images -->
     <AccountImageSection :image-paths="imagePaths" />
     <div class="grid grid-cols-5 grid-rows-1">
-      <!-- Game infos -->
       <div class="col-span-3">
-        <AccountGameInfoSection :game-infos="account.gameInfos" />
+        <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+          <h2>Thông tin game</h2>
+          <AccountGameInfoSection :game-infos="account.gameInfos" />
+        </div>
+        <AccountCommentSection />
       </div>
       <!-- Actions and other infos -->
-      <div class="col-span-2 bg-green-200">
+      <div class="col-span-2 bg-green-200 bg-">
         <!-- <div>
           <ButtonPrimary theme="yellow"> Mua Trả Góp </ButtonPrimary>
           <ButtonPrimary theme="indigo"> Mua Ngay </ButtonPrimary>
         </div> -->
-        <AccountCommentSection />
       </div>
     </div>
 
@@ -38,7 +40,14 @@ export default {
   async asyncData({ $axios, $auth, params }) {
     const [{ data: account }, canUpdateAccount] = await Promise.all([
       $axios.$get(`account/${params.id}`, {
-        params: { _requiredModelRelationships: ['images', 'accountType.game'] },
+        params: {
+          _requiredModelRelationships: [
+            'representativeImage',
+            'otherImages',
+            'accountType.game',
+            'gameInfos',
+          ],
+        },
       }),
       $auth.can('update', `Account:${params.id}`),
     ]);
@@ -50,10 +59,10 @@ export default {
   },
   computed: {
     imagePaths() {
-      const mainImagePath = this.account.representativeImagePath;
-      const otherImagePaths = this.account.images.map((image) => {
-        return image.path;
-      });
+      const mainImagePath = this.account.representativeImage.path;
+      const otherImagePaths = this.account.otherImages.map(
+        (image) => image.path
+      );
       return [mainImagePath, ...otherImagePaths];
     },
   },

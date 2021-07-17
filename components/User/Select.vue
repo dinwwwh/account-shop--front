@@ -4,9 +4,6 @@
       focus:ring-indigo-500 focus:border-indigo-500
       sm:text-sm
       w-96
-      relative
-      flex
-      items-center
       max-w-full
       px-4
       py-2
@@ -16,74 +13,84 @@
       shadow-sm
     "
   >
-    <!-- Infos -->
-    <div class="flex items-center flex-1">
-      <div
-        class="min-w-max px-3 py-1 text-xl font-medium bg-green-200 rounded-md"
-      >
-        <span class="text-green-700">{{ userIds.length }}</span>
-        <span class="text-green-700">users</span>
+    <div class="flex items-center">
+      <!-- Infos -->
+      <div class="flex items-center flex-1">
+        <div
+          class="
+            min-w-max
+            px-3
+            py-1
+            text-xl
+            font-medium
+            bg-green-200
+            rounded-md
+          "
+        >
+          <span class="text-green-700">{{ userIds.length }}</span>
+          <span class="text-green-700">users</span>
+        </div>
       </div>
-    </div>
 
-    <!-- actions -->
-    <div class="flex items-center gap-2">
-      <button
-        type="button"
-        class="
-          hover:bg-indigo-700
-          focus:outline-none
-          focus:ring-2
-          focus:ring-offset-2
-          focus:ring-indigo-500
-          inline-flex
-          items-center
-          px-4
-          py-2
-          text-sm
-          font-medium
-          text-white
-          bg-indigo-600
-          border border-transparent
-          rounded-md
-          shadow-sm
-        "
-        @click="currentMenu = 'MANAGEMENT'"
-      >
-        <IconAdjustments class="size-xl mr-1 -ml-1" />
-        Quản lý
-      </button>
-      <button
-        type="button"
-        class="
-          hover:bg-green-700
-          focus:outline-none
-          focus:ring-2
-          focus:ring-offset-2
-          focus:ring-green-500
-          inline-flex
-          items-center
-          px-4
-          py-2
-          text-sm
-          font-medium
-          text-white
-          bg-green-600
-          border border-transparent
-          rounded-md
-          shadow-sm
-        "
-        @click="currentMenu = 'ADDITION'"
-      >
-        <IconPlus class="size-xl mr-1 -ml-1" />
-        Thêm
-      </button>
+      <!-- actions -->
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="
+            hover:bg-indigo-700
+            focus:outline-none
+            focus:ring-2
+            focus:ring-offset-2
+            focus:ring-indigo-500
+            inline-flex
+            items-center
+            px-4
+            py-2
+            text-sm
+            font-medium
+            text-white
+            bg-indigo-600
+            border border-transparent
+            rounded-md
+            shadow-sm
+          "
+          @click="setScreen('MANAGEMENT')"
+        >
+          <IconAdjustments class="size-xl mr-1 -ml-1" />
+          Quản lý
+        </button>
+        <button
+          type="button"
+          class="
+            hover:bg-green-700
+            focus:outline-none
+            focus:ring-2
+            focus:ring-offset-2
+            focus:ring-green-500
+            inline-flex
+            items-center
+            px-4
+            py-2
+            text-sm
+            font-medium
+            text-white
+            bg-green-600
+            border border-transparent
+            rounded-md
+            shadow-sm
+          "
+          @click="setScreen('ADDITION')"
+        >
+          <IconPlus class="size-xl mr-1 -ml-1" />
+          Thêm
+        </button>
+      </div>
     </div>
 
     <!-- MANAGEMENT SCREEN -->
     <div
       v-if="currentMenu === 'MANAGEMENT'"
-      class="top-full absolute left-0 right-0 mt-3 flex items-end gap-2"
+      class="mt-3 w-full flex items-end gap-2"
     >
       <InputBase
         v-model="textUserIds"
@@ -98,25 +105,23 @@
     </div>
 
     <!-- ADDITION SCREEN -->
-    <div
-      v-if="currentMenu === 'ADDITION'"
-      class="top-full absolute left-0 right-0 mt-3 flex items-end gap-2"
-      @keyup.enter="search"
-    >
-      <InputBase
-        v-model="keyword"
-        type="search"
-        placeholder="Search bằng id, tên, email"
-        class="flex-1"
-      >
-        <template #label> Tìm kiếm </template>
-      </InputBase>
-      <ButtonPrimary them="red" class="mb-1" @click="search">
-        <IconSearch class="size-xl" />
-      </ButtonPrimary>
+    <div v-if="currentMenu === 'ADDITION'" class="mt-3 w-full">
+      <div class="flex items-end gap-2" @keyup.enter="search">
+        <InputBase
+          v-model="keyword"
+          type="search"
+          placeholder="Search bằng id, tên, email"
+          class="flex-1"
+        >
+          <template #label> Tìm kiếm </template>
+        </InputBase>
+        <ButtonPrimary them="red" class="mb-1" @click="search">
+          <IconSearch class="size-xl" />
+        </ButtonPrimary>
+      </div>
 
       <!-- Results of search -->
-      <div class="absolute top-full left-0 right-0 mt-3">
+      <div class="w-full-0 mt-3">
         <div
           v-if="!searchedUsers.length && isSearched"
           class="text-center text-gray-400"
@@ -200,6 +205,11 @@ export default {
     model: {
       type: Array,
       required: true,
+      default() {
+        const val = [];
+        this.$emit('change', val);
+        return val;
+      },
     },
   },
   data() {
@@ -253,6 +263,9 @@ export default {
     },
     destroy() {
       this.userIds = [];
+    },
+    setScreen(name) {
+      this.currentMenu = name === this.currentMenu ? null : name;
     },
   },
 };

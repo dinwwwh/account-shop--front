@@ -31,7 +31,7 @@ export default {
     const [{ data: accountAction }, canUpdateAccountAction] = await Promise.all(
       [
         $axios.$get(`account-action/${params.id}`, {
-          params: { _requiredModelRelationships: ['requiredRoles'] },
+          params: { _requiredModelRelationships: ['rule'] },
         }),
         $auth.can('update', `AccountAction:${params.id}`),
       ]
@@ -50,7 +50,6 @@ export default {
       this.$axios
         .$put(`account-action/${this.$route.params.id}`, this.accountAction)
         .then(({ data }) => {
-          this.accountAction = data;
           this.message.error = null;
           this.message.success = 'Thành công!!';
         })

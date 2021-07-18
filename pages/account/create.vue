@@ -274,9 +274,9 @@ export default {
     create() {
       const data = this.$withFile({
         ...this.filledBaseInfos,
-        accountInfos: this.filledAccountInfos,
-        accountActions: this.performedAccountActions,
-        gameInfos: this.filledGameInfos,
+        rawAccountInfos: this.filledAccountInfos,
+        rawAccountActions: this.performedAccountActions,
+        rawGameInfos: this.filledGameInfos,
         _requiredModelRelationships: [
           'accountInfos',
           'gameInfos',

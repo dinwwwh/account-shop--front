@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="space-y-2">
     <!-- placeholder  -->
     <div class="grid grid-cols-3 gap-6">
       <div class="col-span-3 sm:col-span-2">
@@ -14,7 +14,7 @@
     </div>
 
     <!-- datatype -->
-    <div class="grid grid-cols-3 gap-6 mb-20">
+    <div class="grid grid-cols-3 gap-6">
       <div class="col-span-3 sm:col-span-2">
         <SelectBase
           v-model="rule.datatype"
@@ -28,7 +28,7 @@
     </div>
 
     <!-- required -->
-    <div class="grid grid-cols-3 gap-6 mb-24">
+    <div class="grid grid-cols-3 gap-6">
       <div class="col-span-3 sm:col-span-2">
         <SelectBase
           v-model="rule.required"
@@ -69,23 +69,10 @@
         dụng. Hiện tại đang có {{ lengthOfValues }} giá trị được ghi nhận.
       </template>
     </InputBase>
-
-    <!-- Multiple -->
-    <CheckboxBase v-model="rule.multiple" class="mt-4">
-      <template #label> Nhiều giá trị cùng một lúc? </template>
-      <template #description>
-        Quyết định liệu người dùng được phép chọn nhiều giá trị cùng một lúc hay
-        không.
-      </template>
-    </CheckboxBase>
   </div>
 </template>
 
 <script>
-// 'multiple',
-// 'min',
-// 'max',
-// 'values'
 export default {
   model: {
     prop: 'modelRule',

@@ -95,6 +95,7 @@
             overflow-auto
             focus:outline-none
             sm:text-sm
+            z-10
           "
           tabindex="-1"
           role="listbox"

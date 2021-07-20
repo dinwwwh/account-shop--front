@@ -27,7 +27,7 @@
             rounded-md
           "
         >
-          <span class="text-green-700">{{ userIds.length }}</span>
+          <span class="text-green-700">{{ Object.keys(users).length }}</span>
           <span class="text-green-700">users</span>
         </div>
       </div>
@@ -93,7 +93,7 @@
       class="mt-3 w-full flex items-end gap-2"
     >
       <InputBase
-        v-model="textUserIds"
+        v-model="textUsers"
         placeholder="Danh sách user id"
         class="flex-1"
       >
@@ -203,10 +203,10 @@ export default {
   },
   props: {
     model: {
-      type: Array,
+      type: Object,
       required: true,
       default() {
-        const val = [];
+        const val = {};
         this.$emit('change', val);
         return val;
       },
@@ -221,7 +221,7 @@ export default {
     };
   },
   computed: {
-    userIds: {
+    users: {
       get() {
         return this.model;
       },
@@ -229,15 +229,18 @@ export default {
         this.$emit('change', val);
       },
     },
-    textUserIds: {
+    textUsers: {
       get() {
-        return this.userIds.toString();
+        return Object.keys(this.users).toString();
       },
       set(val) {
-        this.userIds = val
+        val
           .split(',')
           .filter((id) => id)
-          .map((id) => parseInt(id));
+          .map((id) => parseInt(id))
+          .forEach((id) => {
+            this.users[id] = {};
+          });
       },
     },
   },
@@ -253,16 +256,19 @@ export default {
       this.isSearched = true;
     },
     has(user) {
-      return this.userIds.includes(user.id);
+      return Object.keys(this.users).includes(user.id.toString());
     },
     add(user) {
-      this.userIds.push(user.id);
+      this.users[user.id] = {};
+      this.$forceUpdate();
     },
     remove(user) {
-      this.userIds = this.userIds.filter((id) => id !== user.id);
+      delete this.users[user.id];
+      this.$forceUpdate();
     },
     destroy() {
-      this.userIds = [];
+      this.users = {};
+      this.$forceUpdate();
     },
     setScreen(name) {
       this.currentMenu = name === this.currentMenu ? null : name;

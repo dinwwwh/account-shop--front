@@ -45,14 +45,14 @@
       <label class="block text-sm font-medium text-gray-700">
         Những người dùng không bắt buộc
       </label>
-      <UserSelect v-model="rule.unrequiredUserIds" />
+      <UserSelect v-model="rule.rawUnrequiredUsers" />
     </div>
 
     <div v-if="rule.required === false" class="space-y-2">
       <label class="block text-sm font-medium text-gray-700">
         Những người dùng bắt buộc
       </label>
-      <UserSelect v-model="rule.requiredUserIds" />
+      <UserSelect v-model="rule.rawRequiredUsers" />
     </div>
 
     <!-- Values -->
@@ -127,29 +127,33 @@ export default {
     },
     originalValues: {
       get() {
-        if (!this.$typeCheck('Array', this.rule.values)) {
+        if (!this.$typeCheck('Array', this.rule.allowableValues)) {
           return '';
         }
-        return this.rule.values.join('|');
+        return this.rule.allowableValues.join('|');
       },
       set(values) {
         values = values.split('|');
         if (!values.length) {
-          this.rule.values = null;
+          this.rule.allowableValues = null;
           return;
         }
-        this.rule.values = values;
+        this.rule.allowableValues = values;
       },
     },
     lengthOfValues() {
-      return this.rule?.values?.length ?? 0;
+      return this.rule?.allowableValues?.length ?? 0;
     },
   },
   created() {
-    this.rule.requiredUserIds = this.rule.requiredUsers?.map((user) => user.id);
-    this.rule.unrequiredUserIds = this.rule.unrequiredUsers?.map(
-      (user) => user.id
-    );
+    this.rule.rawRequiredUsers = {};
+    this.rule.rawUnrequiredUsers = {};
+    this.rule.requiredUsers?.forEach((user) => {
+      this.rule.rawRequiredUsers[user.id] = {};
+    });
+    this.rule.unrequiredUsers?.forEach((user) => {
+      this.rule.rawUnrequiredUsers[user.id] = {};
+    });
   },
 };
 </script>

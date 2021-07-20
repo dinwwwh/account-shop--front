@@ -1,10 +1,17 @@
 <template>
   <div>
-    <div v-for="i in 10" :key="i" class="m-auto mt-20">
-      <div>
-        <input v-model="selectedUsers[i].value" type="text" />
-      </div>
-    </div>
+    <SelectPlain
+      v-model="value"
+      error
+      :items="[
+        { a: 1, b: 'so 1' },
+        { a: 2, b: 'so 2' },
+      ]"
+      placeholder="haha"
+    >
+      <template #label> This is label </template>
+      <template #description> This is description </template>
+    </SelectPlain>
   </div>
 </template>
 
@@ -13,14 +20,8 @@ export default {
   layout: 'admin',
   data() {
     return {
-      selectedUsers: [],
+      value: undefined,
     };
   },
-  created() {
-    for (let i = 1; i <= 10; i++) {
-      this.selectedUsers[i] = {};
-    }
-  },
-  methods: {},
 };
 </script>

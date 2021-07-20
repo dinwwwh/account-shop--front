@@ -44,8 +44,7 @@ export default {
     update() {
       this.$axios
         .$put(`game-info/${this.$route.params.id}`, this.gameInfo)
-        .then(({ data }) => {
-          this.gameInfo = data;
+        .then(() => {
           this.message.error = null;
           this.message.success = 'Thành công!!';
         })

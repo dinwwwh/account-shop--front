@@ -234,13 +234,14 @@ export default {
         return Object.keys(this.users).toString();
       },
       set(val) {
+        const users = {};
         val
           .split(',')
           .filter((id) => id)
-          .map((id) => parseInt(id))
           .forEach((id) => {
-            this.users[id] = {};
+            users[id] = {};
           });
+        this.users = users;
       },
     },
   },

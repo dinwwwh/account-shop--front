@@ -82,6 +82,11 @@ export default {
     modelRule: {
       type: Object,
       required: true,
+      default() {
+        const val = {};
+        this.$emit('input', val);
+        return val;
+      },
     },
     canEdit: {
       type: Boolean,

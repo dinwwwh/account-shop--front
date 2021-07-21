@@ -65,14 +65,14 @@
           <label class="block text-sm font-medium text-gray-700">
             Những người dùng không bắt buộc
           </label>
-          <UserSelect v-model="accountAction.rule.unrequiredUserIds" />
+          <UserSelect v-model="accountAction.rule.rawUnrequiredUsers" />
         </div>
 
         <div v-if="accountAction.rule.required === false" class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">
             Những người dùng bắt buộc
           </label>
-          <UserSelect v-model="accountAction.rule.requiredUserIds" />
+          <UserSelect v-model="accountAction.rule.rawRequiredUsers" />
         </div>
 
         <!-- Actions -->
@@ -111,10 +111,6 @@ export default {
           name: 'Không bắt buộc',
           value: false,
         },
-        {
-          name: 'Tuỳ theo role',
-          value: null,
-        },
       ],
       originalRoles: [],
     };
@@ -136,10 +132,14 @@ export default {
     if (!this.$typeCheck('Object', this.accountAction.rule)) {
       this.accountAction.rule = {};
     }
-    this.accountAction.rule.requiredUserIds =
-      this.accountAction.rule.requiredUsers?.map((user) => user.id);
-    this.accountAction.rule.unrequiredUserIds =
-      this.accountAction.rule.unrequiredUsers?.map((user) => user.id);
+    this.accountAction.rule.rawRequiredUsers = {};
+    this.accountAction.rule.rawUnrequiredUsers = {};
+    this.accountAction.rule.requiredUsers?.forEach((user) => {
+      this.accountAction.rule.rawRequiredUsers[user.id] = {};
+    });
+    this.accountAction.rule.unrequiredUsers?.forEach((user) => {
+      this.accountAction.rule.rawUnrequiredUsers[user.id] = {};
+    });
   },
 };
 </script>

@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     imagePaths() {
-      const mainImagePath = this.account.representativeImage.path;
+      const mainImagePath = this.account.representativeImage?.path;
       const otherImagePaths = this.account.otherImages.map(
         (image) => image.path
       );

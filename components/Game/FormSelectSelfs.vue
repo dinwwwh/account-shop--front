@@ -27,7 +27,7 @@
       <div class="flex-shrink-0">
         <img
           class="h-10 w-10 rounded-full"
-          :src="game.representativeImage.path"
+          :src="representativeImage.path"
           alt=""
         />
       </div>
@@ -69,6 +69,9 @@ export default {
       set(val) {
         this.$emit('changed', val);
       },
+    },
+    representativeImage() {
+      return this.game?.representativeImage ?? {};
     },
   },
   methods: {

@@ -22,21 +22,24 @@
       </div>
       <div class="flex gap-2">
         <HeadingBase5> {{ gameInfo.name }}: </HeadingBase5>
-        <p
-          class="px-2 py-1 max-w-max text-sm font-bold rounded-md"
-          :class="
-            ArrayHelper.random([
-              'bg-red-100 text-red-800',
-              'bg-yellow-100 text-yellow-800',
-              'bg-green-100 text-green-800',
-              'bg-blue-100 text-blue-800',
-              'bg-purple-100 text-purple-800',
-              'bg-pink-100 text-pink-800',
-            ])
-          "
-        >
-          {{ JSON.parse(gameInfo.pivot.value) }}
-        </p>
+        <template v-for="value in gameInfo.pivot.values">
+          <p
+            :key="value"
+            class="px-2 py-1 max-w-max text-sm font-bold rounded-md"
+            :class="
+              ArrayHelper.random([
+                'bg-red-100 text-red-800',
+                'bg-yellow-100 text-yellow-800',
+                'bg-green-100 text-green-800',
+                'bg-blue-100 text-blue-800',
+                'bg-purple-100 text-purple-800',
+                'bg-pink-100 text-pink-800',
+              ])
+            "
+          >
+            {{ value }}
+          </p>
+        </template>
       </div>
     </div>
   </section>

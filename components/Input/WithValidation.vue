@@ -1,10 +1,10 @@
 <template>
   <div>
-    <template v-if="!$typeCheck('Array', rule.values)">
+    <template v-if="!$typeCheck('Array', rule.values) || !rule.values.length">
       <template v-if="!rule.multiple">
         <InputBase
           v-if="type"
-          v-model="value"
+          v-model="values[0]"
           :type="type"
           :error="errorMessage"
           @input="onInput"
@@ -29,7 +29,7 @@
     <template v-else>
       <template v-if="!rule.multiple">
         <SelectBase
-          v-model="value"
+          v-model="values[0]"
           :options="options"
           display-key="display"
           value-key="value"
@@ -63,8 +63,13 @@ export default {
   },
   props: {
     modelValue: {
-      type: null,
+      type: Array,
       required: true,
+      default() {
+        const val = [];
+        this.$emit('input', val);
+        return val;
+      },
     },
     rule: {
       type: Object,
@@ -76,7 +81,7 @@ export default {
     },
   },
   computed: {
-    value: {
+    values: {
       get() {
         return this.modelValue;
       },
@@ -95,7 +100,7 @@ export default {
       return undefined;
     },
     errorMessage() {
-      return this.$getValidatorErrorMessage(this.$v.value);
+      return this.$getValidatorErrorMessage(this.$v.values);
     },
     options() {
       if (!this.$typeCheck('Array', this.rule.values)) return [];
@@ -104,7 +109,7 @@ export default {
   },
   validations() {
     return {
-      value: this.generateValidatorsFromRule(this.rule),
+      values: this.generateValidatorsFromRule(this.rule),
     };
   },
   watch: {
@@ -117,10 +122,10 @@ export default {
   },
   methods: {
     emitValidator() {
-      this.$emit('emitted-validator-panel', this.$v.value);
+      this.$emit('emitted-validator-panel', this.$v.values);
     },
     onInput() {
-      if (this.isTouchAuto) this.$v.value.$touch();
+      if (this.isTouchAuto) this.$v.values.$touch();
     },
     generateValidatorsFromRule,
   },

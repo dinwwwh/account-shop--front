@@ -242,6 +242,7 @@ export default {
             users[id] = {};
           });
         this.users = users;
+        this.$forceUpdate();
       },
     },
   },

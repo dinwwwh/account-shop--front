@@ -85,13 +85,13 @@ export default {
       this.validatorPanels[index] = $v;
     },
     get(accountInfo) {
-      return this.filledAccountInfos[accountInfo.id]?.value;
+      return this.filledAccountInfos[accountInfo.id]?.values;
     },
-    set(accountInfo, value) {
+    set(accountInfo, values) {
       if (!this.filledAccountInfos[accountInfo.id]) {
-        this.filledAccountInfos[accountInfo.id] = { value };
+        this.filledAccountInfos[accountInfo.id] = { values };
       } else {
-        this.filledAccountInfos[accountInfo.id].value = value;
+        this.filledAccountInfos[accountInfo.id].values = values;
       }
       this.$forceUpdate();
     },

@@ -69,6 +69,7 @@ export default {
     imagePaths: {
       type: Array,
       required: true,
+      default: () => [],
     },
   },
   data() {

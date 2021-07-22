@@ -83,24 +83,21 @@ export default {
   },
   created() {
     this.$emit('emit-panel', this.panel);
-    // this.gameInfos.forEach(({ id }) => {
-    //   this.filledGameInfos[id] = { value: null };
-    // });
   },
   methods: {
     mergeValidatorPanels($v, index) {
       this.validatorPanels[index] = $v;
     },
-    set(gameInfo, val) {
+    set(gameInfo, values) {
       if (!this.filledGameInfos[gameInfo.id]) {
-        this.filledGameInfos[gameInfo.id] = { value: val };
+        this.filledGameInfos[gameInfo.id] = { values };
       } else {
-        this.filledGameInfos[gameInfo.id].value = val;
+        this.filledGameInfos[gameInfo.id].values = values;
       }
       this.$forceUpdate();
     },
     get(gameInfo) {
-      return this.filledGameInfos[gameInfo.id]?.value;
+      return this.filledGameInfos[gameInfo.id]?.values;
     },
   },
 };

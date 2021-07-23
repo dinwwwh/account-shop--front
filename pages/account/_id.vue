@@ -13,20 +13,39 @@
 
     <!-- Images -->
     <AccountImageSection :image-paths="imagePaths" />
-    <div class="grid grid-cols-5 grid-rows-1">
-      <div class="col-span-3">
-        <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
-          <h2>Thông tin game</h2>
+
+    <!-- Game info section - account trading section -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+      <div class="md:col-span-3">
+        <div
+          class="
+            bg-white
+            shadow
+            sm:rounded-lg sm:overflow-hidden
+            px-4
+            py-6
+            sm:px-6
+            space-y-2
+          "
+        >
+          <HeadingBase4 class="text-center">Thông tin game</HeadingBase4>
           <AccountGameInfoSection :game-infos="account.gameInfos" />
         </div>
-        <AccountCommentSection />
       </div>
-      <!-- Actions and other infos -->
-      <div class="col-span-2 bg-green-200 bg-">
-        <!-- <div>
-          <ButtonPrimary theme="yellow"> Mua Trả Góp </ButtonPrimary>
-          <ButtonPrimary theme="indigo"> Mua Ngay </ButtonPrimary>
-        </div> -->
+
+      <div class="md:col-span-2">
+        <div
+          class="
+            bg-white
+            shadow
+            sm:rounded-lg sm:overflow-hidden
+            px-4
+            py-6
+            sm:px-6
+          "
+        >
+          <AccountTradingSection :account="account" />
+        </div>
       </div>
     </div>
 
@@ -46,6 +65,7 @@ export default {
             'otherImages',
             'accountType.game',
             'gameInfos',
+            'accountInfos',
           ],
         },
       }),

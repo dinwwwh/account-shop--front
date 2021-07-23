@@ -30,9 +30,10 @@
             bg-white
             rounded-lg
             shadow-xl
+            max-w-[100wh]
           "
         >
-          <div class="sm:block absolute top-0 right-0 hidden pt-4 pr-4">
+          <div class="sm:block absolute top-0 right-0 pt-4 pr-4">
             <button
               type="button"
               class="

@@ -4,15 +4,15 @@
       {{ message.success }}
     </MessageBaseSuccess>
 
-    <MessageBaseError v-if="message.error">
-      {{ message.error }}
-    </MessageBaseError>
+    <MessageBaseInfo v-if="message.info"> {{ message.info }} </MessageBaseInfo>
 
     <MessageBaseWarning v-if="message.warning">
       {{ message.warning }}
     </MessageBaseWarning>
 
-    <MessageBaseInfo v-if="message.info"> {{ message.info }} </MessageBaseInfo>
+    <MessageBaseError v-if="message.error">
+      {{ message.error }}
+    </MessageBaseError>
   </div>
 </template>
 

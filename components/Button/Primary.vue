@@ -12,15 +12,22 @@
       'focus-within:ring-red-500': theme === 'red',
       'focus-within:ring-green-500': theme === 'green',
       'focus-within:ring-yellow-500': theme === 'yellow',
+      'focus-within:ring-blue-500': theme === 'blue',
+      'focus-within:ring-gray-500': theme === 'gray',
+      'focus-within:ring-purple-500': theme === 'purple',
+      'focus-within:ring-pink-500': theme === 'pink',
     }"
     v-on="$listeners"
   >
     <button
       type="button"
       class="
+        w-full
         focus:outline-none
-        inline-flex
+        flex
         items-center
+        justify-center
+        m-x-auto
         font-medium
         border border-transparent
         shadow-sm
@@ -35,6 +42,10 @@
         'text-white bg-red-600 hover:bg-red-700 ': theme === 'red',
         'text-white bg-green-600 hover:bg-green-700 ': theme === 'green',
         'text-white bg-yellow-600 hover:bg-yellow-700 ': theme === 'yellow',
+        'text-white bg-blue-600 hover:bg-blue-700 ': theme === 'blue',
+        'text-white bg-gray-600 hover:bg-gray-700 ': theme === 'gray',
+        'text-white bg-purple-600 hover:bg-purple-700 ': theme === 'purple',
+        'text-white bg-pink-600 hover:bg-pink-700 ': theme === 'pink',
         'text-opacity-10': loading,
       }"
     >

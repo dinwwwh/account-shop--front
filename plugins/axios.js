@@ -59,10 +59,14 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
       formData.append(initKey, data ? 1 : 0);
     }
 
-    // Case: data is invalid
+    // Case: data is undefined
+    else if ($typeCheck('Undefine', data)) {
+      return formData;
+    }
+
+    // Case: the rest case
     else {
-      // eslint-disable-next-line no-console
-      console.error(`$axios.withFile() datatype ${typeof data} is invalid`);
+      formData.append(initKey, data);
       return formData;
     }
 

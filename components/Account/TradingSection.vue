@@ -1,93 +1,49 @@
 <template>
-  <div class="space-y-5">
+  <div class="space-y-7">
     <!-- Account infos -->
     <div class="space-y-2">
       <HeadingBase4 class="text-center"> Thông tin đính kèm </HeadingBase4>
 
-      <div class="flex gap-2 flex-wrap">
-        <p
-          class="
-            px-2
-            py-1
-            max-w-max
-            text-sm
-            font-bold
-            rounded-md
-            bg-trueGray-100
-            text-trueGray-700
-          "
+      <ul class="space-y-5">
+        <li class="lg:col-span-1 flex items-start">
+          <div class="flex-shrink-0">
+            <IconCheckCircle class="size-lg text-green-400" />
+          </div>
+          <p class="ml-3 text-sm text-gray-700">Tài khoản</p>
+        </li>
+        <li class="lg:col-span-1 flex items-start">
+          <div class="flex-shrink-0">
+            <IconCheckCircle class="size-lg text-green-400" />
+          </div>
+          <p class="ml-3 text-sm text-gray-700">Mật khẩu</p>
+        </li>
+        <li
+          v-for="accountInfo in accountInfos"
+          :key="accountInfo.id"
+          class="lg:col-span-1 flex items-start"
         >
-          Tài khoản
-        </p>
-        <p
-          class="
-            px-2
-            py-1
-            max-w-max
-            text-sm
-            font-bold
-            rounded-md
-            bg-trueGray-100
-            text-trueGray-700
-          "
-        >
-          Mật khẩu
-        </p>
-        <div v-for="accountInfo in accountInfos" :key="accountInfo.id">
-          <p
-            class="
-              px-2
-              py-1
-              max-w-max
-              text-sm
-              font-bold
-              rounded-md
-              bg-trueGray-100
-              text-trueGray-700
-            "
-          >
-            {{ accountInfo.name }}
-          </p>
-        </div>
-      </div>
+          <div class="flex-shrink-0">
+            <IconCheckCircle class="size-lg text-green-400" />
+          </div>
+          <p class="ml-3 text-sm text-gray-700">{{ accountInfo.name }}</p>
+        </li>
+      </ul>
     </div>
 
     <!-- Prices -->
-    <div class="flex items-center gap-3 justify-center">
+    <div class="flex items-center justify-center gap-3">
       <div class="text-gray-500">Giá bán:</div>
       <div
-        class="flex items-center gap-1 text-gray-700 font-medium tracking-wider"
+        class="flex items-center gap-1 font-medium tracking-wider text-gray-700"
       >
         {{ formatNumber(account.price) }} <AppCoinGold class="size-xl" />
       </div>
     </div>
 
     <!-- Actions -->
-    <button
-      type="submit"
-      class="
-        w-full
-        flex
-        justify-center
-        py-2
-        px-4
-        border border-transparent
-        rounded-md
-        shadow-sm
-        text-sm
-        font-medium
-        text-white
-        bg-indigo-600
-        hover:bg-indigo-700
-        focus:outline-none
-        focus:ring-2
-        focus:ring-offset-2
-        focus:ring-indigo-500
-      "
-      @click="isShowTradingAccount = true"
-    >
+    <ButtonPrimary @click="isShowTradingAccount = true">
       Mua ngay
-    </button>
+    </ButtonPrimary>
 
     <!-- Popup trading-account -->
     <AccountTradingPopup v-model="isShowTradingAccount" :account="account" />

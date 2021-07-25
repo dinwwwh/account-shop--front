@@ -3,49 +3,40 @@
     <!-- Tittle -->
     <div>
       <HeadingBase2> Tài khoản #{{ account.id }} </HeadingBase2>
-      <HeadingBase5>
-        Game {{ account.accountType.game.name }}
-        <span class="text-base font-normal">
-          ({{ account.accountType.game.publisherName }})
-        </span>
-      </HeadingBase5>
+      <div class="flex items-center gap-2">
+        <div class="flex-shrink-0">
+          <img class="h-8 w-8 rounded-full" :src="gameImagePath" />
+        </div>
+        <HeadingBase5>
+          {{ account.accountType.game.name }}
+          <span class="text-base font-normal">
+            ({{ account.accountType.game.publisherName }})
+          </span>
+        </HeadingBase5>
+      </div>
     </div>
 
     <!-- Images -->
     <AccountImageSection :image-paths="imagePaths" />
 
+    <!-- Management -->
+    <GroupBase>
+      <AccountManagementSection :account="account" />
+    </GroupBase>
+
     <!-- Game info section - account trading section -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
       <div class="md:col-span-3">
-        <div
-          class="
-            bg-white
-            shadow
-            sm:rounded-lg sm:overflow-hidden
-            px-4
-            py-6
-            sm:px-6
-            space-y-2
-          "
-        >
+        <GroupBase>
           <HeadingBase4 class="text-center">Thông tin game</HeadingBase4>
           <AccountGameInfoSection :game-infos="account.gameInfos" />
-        </div>
+        </GroupBase>
       </div>
 
       <div class="md:col-span-2">
-        <div
-          class="
-            bg-white
-            shadow
-            sm:rounded-lg sm:overflow-hidden
-            px-4
-            py-6
-            sm:px-6
-          "
-        >
+        <GroupBase>
           <AccountTradingSection :account="account" />
-        </div>
+        </GroupBase>
       </div>
     </div>
 
@@ -63,7 +54,9 @@ export default {
           _requiredModelRelationships: [
             'representativeImage',
             'otherImages',
-            'accountType.game',
+            'accountType.game.gameInfos.rule',
+            'accountType.game.representativeImage',
+            'accountType.accountInfos.rule',
             'gameInfos',
             'accountInfos',
           ],
@@ -84,6 +77,9 @@ export default {
         (image) => image.path
       );
       return [mainImagePath, ...otherImagePaths];
+    },
+    gameImagePath() {
+      return this.account.accountType.game?.representativeImage?.path;
     },
   },
 };

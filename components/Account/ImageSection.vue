@@ -5,11 +5,11 @@
         h-96
         md:grid-cols-2 md:rounded-2xl
         relative
-        grid-cols-1 grid-rows-1
+        grid grid-cols-1 grid-rows-1
         gap-2
         overflow-hidden
-        shadow-sm
         rounded-md
+        shadow-sm
       "
     >
       <!-- Main image -->

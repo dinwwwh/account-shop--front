@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { typeCheck } from 'type-check';
+
 export default {
   model: {
     prop: 'modelGameInfos',
@@ -34,6 +36,9 @@ export default {
     gameInfos: {
       type: Array,
       required: true,
+      validator(gameInfos) {
+        return !gameInfos.some(({ rule }) => !typeCheck('Object', rule));
+      },
     },
     isTouchAuto: {
       type: Boolean,

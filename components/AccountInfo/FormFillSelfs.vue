@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import typeCheck from 'type-check';
+
 export default {
   model: {
     prop: 'model',
@@ -34,6 +36,9 @@ export default {
     accountInfos: {
       type: Array,
       required: true,
+      validator(accountInfos) {
+        return !accountInfos.some(({ rule }) => !typeCheck('Object', rule));
+      },
     },
     isTouchAuto: {
       type: Boolean,

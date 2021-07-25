@@ -83,5 +83,5 @@ function getValidatorErrorMessage(validator, options) {
     return false;
   });
 
-  return errorMessage;
+  return errorMessage || 'Trường này không hợp lệ.';
 }

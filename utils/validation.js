@@ -9,23 +9,21 @@ export function generateValidatorsFromRule(rule, user = null) {
     isRequired = true;
   }
 
-  let result = {};
+  const result = { $each: {} };
   const validators = this.$vuelidate.validators;
 
   if (isRequired) {
     result.required = validators.required;
+    result.minLength = validators.minLength(1);
+    result.$each.required = validators.required;
   }
 
   if (rule.datatype === 'integer') {
-    result.integer = validators.integer;
+    result.$each.integer = validators.integer;
   }
 
   if (this.$typeCheck('Array', rule.values)) {
-    result.in = validators.in(rule.values);
-  }
-
-  if (rule.multiple) {
-    result = { $each: result };
+    result.$each.integer = validators.in(rule.values);
   }
 
   return result;

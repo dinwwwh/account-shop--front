@@ -32,8 +32,8 @@
               text-sm
               font-bold
               rounded-md
-              bg-trueGray-100
-              text-trueGray-700
+              bg-true-gray-100
+              text-true-gray-700
             "
           >
             {{ value }}

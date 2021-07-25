@@ -60,7 +60,7 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
     }
 
     // Case: data is undefined
-    else if ($typeCheck('Undefine', data)) {
+    else if ($typeCheck('Undefined', data)) {
       return formData;
     }
 

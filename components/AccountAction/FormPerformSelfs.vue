@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import typeCheck from 'type-check';
+import { typeCheck } from 'type-check';
 
 export default {
   model: {

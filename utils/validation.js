@@ -22,8 +22,12 @@ export function generateValidatorsFromRule(rule, user = null) {
     result.$each.integer = validators.integer;
   }
 
-  if (this.$typeCheck('Array', rule.values)) {
-    result.$each.integer = validators.in(rule.values);
+  if (this.$typeCheck('Array', rule.allowableValues)) {
+    result.$each.in = validators.in(rule.allowableValues);
+  }
+
+  if (this.$typeCheck('Number', rule.allowableNumber)) {
+    result.maxLength = validators.maxLength(rule.allowableNumber);
   }
 
   return result;

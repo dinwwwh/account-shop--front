@@ -1,6 +1,17 @@
 const colors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
+function kebabCase(str) {
+  return str.replace(/[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g, function (match) {
+    return '-' + match.toLowerCase();
+  });
+}
+
+const kebabCaseColors = {};
+for (const key in colors) {
+  kebabCaseColors[kebabCase(key)] = colors[key];
+}
+
 module.exports = {
   mode: 'jit',
   purge: {
@@ -17,7 +28,7 @@ module.exports = {
     extend: {},
     colors: {
       // Build your palette here
-      ...colors,
+      ...kebabCaseColors,
       transparent: 'transparent',
       current: 'currentColor',
     },

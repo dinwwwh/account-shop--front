@@ -45,7 +45,7 @@ export default {
           this.errorMessage = null;
 
           this.$router.push({
-            name: 'game-id',
+            name: 'game-id-edit',
             params: { id: data.id },
           });
         })

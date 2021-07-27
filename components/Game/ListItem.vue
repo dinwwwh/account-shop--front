@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    :to="{ name: 'game-id', params: { id: game.id } }"
+    :to="{ name: 'game-id-edit', params: { id: game.id } }"
     class="block hover:bg-gray-50"
   >
     <div class="px-4 py-4 flex items-center sm:px-6">

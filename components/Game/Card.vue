@@ -11,7 +11,7 @@
             sm:translate-x-0
             md:left-auto
             inline-block
-            rounded-full
+            rounded-2xl
             transform
             -translate-y-1/2
             w-1/3

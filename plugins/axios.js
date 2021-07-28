@@ -33,6 +33,11 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
       formData.append(initKey, data ? 1 : 0);
     }
 
+    // Case: data is NULL
+    else if ($typeCheck('Null', data)) {
+      formData.append(initKey, '');
+    }
+
     // Case: data isn't undefined
     else if (!$typeCheck('Undefined', data)) {
       formData.append(initKey, data);

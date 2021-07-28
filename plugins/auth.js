@@ -48,12 +48,14 @@ export default function ({ $axios, store: { commit } }, inject) {
 
   function can(ability, params) {
     return $axios
-      .get(`can/${ability}`, { params: { params } })
-      .then(() => {
-        return true;
+      .get(`can/${ability}`, {
+        params: { params },
+        validateStatus: (status) =>
+          (status >= 200 && status < 300) || (status >= 400 && status < 500),
       })
-      .catch(() => {
-        return false;
+      .then(({ status }) => {
+        if (status >= 200 && status < 300) return true;
+        else return false;
       });
   }
 }

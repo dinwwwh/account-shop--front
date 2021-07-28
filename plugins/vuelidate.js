@@ -41,6 +41,9 @@ const rules = {
   in(values) {
     return (val) => !helpers.req(val) || values.includes(val);
   },
+  equal(value) {
+    return (val) => !helpers.req(val) || value === val;
+  },
 };
 const messages = {
   required: ':name là bắt buộc.',
@@ -61,6 +64,7 @@ const messages = {
   macAddress: ':name phải là một đại chỉ MAC hợp lệ.',
   url: ':name phải là một địa chỉ URL hợp lệ.',
   in: ':name có giá trị không hợp lệ',
+  equal: ':name có giá trị không hợp lệ',
 };
 
 export default function (context, inject) {

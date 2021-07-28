@@ -1,4 +1,4 @@
-export default function ({ $axios, store: { commit } }, inject) {
+export default function ({ $axios, store: { commit, getters } }, inject) {
   // const { profile } = store.auth.state;
   // const {
   //   'auth/permissionKeys': permissionKeys,
@@ -46,16 +46,18 @@ export default function ({ $axios, store: { commit } }, inject) {
   //   return keys.every((key) => hasPermissionTo(key));
   // }
 
-  function can(ability, params) {
-    return $axios
-      .get(`can/${ability}`, {
-        params: { params },
-        validateStatus: (status) =>
-          (status >= 200 && status < 300) || (status >= 400 && status < 500),
-      })
-      .then(({ status }) => {
-        if (status >= 200 && status < 300) return true;
-        else return false;
-      });
+  async function can(ability, params) {
+    if (!getters['auth/authenticated']) {
+      return false;
+    }
+
+    const { status } = await $axios.get(`can/${ability}`, {
+      params: { params },
+      validateStatus: () => true,
+    });
+
+    if (status >= 200 && status < 300) return true;
+
+    return false;
   }
 }

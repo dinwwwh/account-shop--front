@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col bg-white rounded-2xl shadow-xl">
+  <div class="bg-white rounded-sm sm:rounded-md shadow-xl">
     <div class="flex-1 relative px-4 py-6 md:px-6">
       <slot />
     </div>

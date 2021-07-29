@@ -3,7 +3,8 @@
     class="
       bg-white
       shadow
-      sm:rounded-lg sm:overflow-hidden
+      rounded-sm
+      sm:rounded-md sm:overflow-hidden
       px-4
       py-6
       sm:px-6

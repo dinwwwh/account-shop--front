@@ -2,7 +2,7 @@
   <div>
     <GroupSeparated>
       <template #default>
-        <div>
+        <div class="space-y-6">
           <div>
             <h2
               id="payment-details-heading"

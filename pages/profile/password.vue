@@ -63,7 +63,7 @@
 
           <ButtonPrimary
             theme="gray"
-            :pending="pending"
+            :loading="loading"
             @click="updatePassword"
           >
             Cập nhật
@@ -84,7 +84,7 @@ export default {
         success: undefined,
         warning: undefined,
       },
-      pending: false,
+      loading: false,
     };
   },
   validations() {
@@ -122,11 +122,23 @@ export default {
         return;
       }
 
-      this.message.warning = 'Chức năng chưa hoàn thiện';
-
-      // this.pending =true;
-      // this.$axios.$post('',{})
-      // this.pending =false;
+      this.loading = true;
+      this.$axios
+        .$patch('password', {
+          newPassword: this.password.new,
+          _confirmedPassword: this.password.old,
+        })
+        .then(() => {
+          this.message.success = 'Cập nhật thành công';
+        })
+        .catch(({ response: { status } }) => {
+          if (status === 423)
+            this.message.error = 'Mật khẩu xác nhận không chính xác';
+          else this.message.error = 'Thất bại, vui lòng thử lại sau';
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
 };

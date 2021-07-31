@@ -198,6 +198,7 @@
                       bg-white
                       ring-1 ring-black ring-opacity-5
                       focus:outline-none
+                      z-40
                     "
                     role="menu"
                     aria-orientation="vertical"

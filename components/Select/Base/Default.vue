@@ -193,12 +193,12 @@ export default {
     // Determine value key in option to return it's value for scope parent
     valueKey: {
       type: String,
-      default: 'value',
+      default: undefined,
     },
     // Determine display key in option to show it's value for user interface
     displayKey: {
       type: String,
-      default: 'displayValue',
+      default: undefined,
     },
     // Determine whether this tag have error
     error: {
@@ -222,8 +222,8 @@ export default {
     customOptions() {
       return this.options.map((option, i) => {
         return {
-          displayValue: option[this.displayKey],
-          value: option[this.valueKey],
+          displayValue: this.displayKey ? option[this.displayKey] : option,
+          value: this.valueKey ? option[this.valueKey] : option,
           selected: option[this.valueKey] === this.value,
           highlighted: this.currentHighlighted === i,
         };

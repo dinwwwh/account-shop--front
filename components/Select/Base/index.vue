@@ -41,7 +41,7 @@ export default {
   props: {
     model: {
       type: null,
-      default: undefined,
+      required: true,
     },
     options: {
       type: Array,

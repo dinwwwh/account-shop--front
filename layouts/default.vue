@@ -216,6 +216,16 @@
                     >
                       Profile
                     </NuxtLink>
+                    <NuxtLink
+                      id="user-menu-item-0"
+                      :to="{ name: 'recharge' }"
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700"
+                      role="menuitem"
+                      tabindex="-1"
+                    >
+                      Nạp tiền
+                    </NuxtLink>
                     <a
                       id="user-menu-item-2"
                       href="#logout"
@@ -350,6 +360,20 @@
                 "
               >
                 Profile
+              </NuxtLink>
+              <NuxtLink
+                :to="{ name: 'recharge' }"
+                class="
+                  block
+                  px-4
+                  py-2
+                  text-base
+                  font-medium
+                  text-gray-500
+                  hover:text-gray-800 hover:bg-gray-100
+                "
+              >
+                Nạp tiền
               </NuxtLink>
               <a
                 href="#logout"

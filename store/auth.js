@@ -7,8 +7,17 @@ export const getters = {
   authenticated({ profile }) {
     return !!profile?.name;
   },
-  permissionKeys({ profile }) {
-    return profile?.permissions.map((permission) => permission.key) ?? [];
+  allPermissions({ profile }, { authenticated }) {
+    if (!authenticated) return [];
+    const result = [...profile.permissions];
+    profile.roles.forEach((role) => {
+      role.permissions.forEach((permission) => {
+        if (!result.find((p) => p.key === permission.key)) {
+          result.push(permission);
+        }
+      });
+    });
+    return result;
   },
 };
 

@@ -1,15 +1,18 @@
 export const actions = {
   async nuxtServerInit({ commit }, { $axios }) {
-    // Init auth
-    await $axios
-      .$get('profile', {
-        params: { _requiredModelRelationships: ['roles', 'permissions'] },
-        validateStatus(status) {
-          return true;
+    const [profile, settings] = await Promise.all([
+      $axios.$get('profile', {
+        params: {
+          _requiredModelRelationships: ['roles.permissions', 'permissions'],
         },
-      })
-      .then((data) => {
-        commit('auth/user', data.data);
-      });
+        validateStatus: () => true,
+      }),
+      $axios.$get('setting/public', {
+        validateStatus: () => true,
+      }),
+    ]);
+
+    commit('auth/user', profile.data);
+    commit('app/publicSettings', settings.data);
   },
 };

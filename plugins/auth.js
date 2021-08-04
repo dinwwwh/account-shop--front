@@ -1,26 +1,27 @@
 export default function ({ $axios, store: { commit, getters } }, inject) {
-  // const { profile } = store.auth.state;
-  // const {
-  //   'auth/permissionKeys': permissionKeys,
-  //   'auth/authenticated': authenticated,
-  // } = store.getters;
-
   inject('auth', {
     login,
     logout,
     can,
-    // hasPermissionTo,
-    // hasAnyPermission,
-    // hasAllPermissions,
-    // canAccessLink,
+    hasPermissionTo,
+    hasAnyPermission,
+    hasAllPermissions,
   });
 
   async function login(email, password, remember = false) {
-    const profile = await $axios.$post('login', {
-      email,
-      password,
-      remember,
-    });
+    const profile = await $axios.$post(
+      'login',
+      {
+        email,
+        password,
+        remember,
+      },
+      {
+        params: {
+          _requiredModelRelationships: ['roles.permissions', 'permissions'],
+        },
+      }
+    );
     commit('auth/user', profile.data);
     return profile.data;
   }
@@ -31,20 +32,22 @@ export default function ({ $axios, store: { commit, getters } }, inject) {
     });
   }
 
-  // function hasPermissionTo(key) {
-  //   if (!authenticated) return false;
-  //   return permissionKeys.includes(key);
-  // }
-  // function hasAnyPermission(...keys) {
-  //   if (!authenticated) return false;
-  //   keys = keys.flat();
-  //   return keys.some((key) => hasPermissionTo(key));
-  // }
-  // function hasAllPermissions(...keys) {
-  //   if (!authenticated) return false;
-  //   keys = keys.flat();
-  //   return keys.every((key) => hasPermissionTo(key));
-  // }
+  function hasPermissionTo(key) {
+    if (!getters['auth/authenticated']) return false;
+    return !!getters['auth/allPermissions'].find(
+      (permission) => permission.key === key
+    );
+  }
+  function hasAnyPermission(...keys) {
+    if (!getters['auth/authenticated']) return false;
+    keys = keys.flat();
+    return keys.some((key) => hasPermissionTo(key));
+  }
+  function hasAllPermissions(...keys) {
+    if (!getters['auth/authenticated']) return false;
+    keys = keys.flat();
+    return keys.every((key) => hasPermissionTo(key));
+  }
 
   async function can(ability, params) {
     if (!getters['auth/authenticated']) {

@@ -2,7 +2,11 @@ export const state = () => ({
   publicSettings: [],
 });
 
-export const getters = {};
+export const getters = {
+  getPublicSettingByKey({ publicSettings }) {
+    return (key) => publicSettings.find((setting) => setting.key === key);
+  },
+};
 
 export const actions = {};
 

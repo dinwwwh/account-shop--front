@@ -1,6 +1,7 @@
 <template>
   <div class="space-y-12">
-    <GroupSeparated>
+    <!-- Manual recharge phonecard -->
+    <GroupSeparated v-if="recharge_phonecard_manual_enable">
       <div class="space-y-4">
         <div>
           <HeadingBase4> Nạp thủ công </HeadingBase4>
@@ -11,30 +12,46 @@
 
         <div class="space-y-2">
           <SelectBase
-            v-model="manualCard.type"
+            v-model="manualCard.telco"
             class="md:w-4/5 lg:w-3/5"
-            :options="manualCard.typeOptions"
-            display-key="display"
-            value-key="type"
-            :error="$v.manualCard.type.$error"
+            :options="recharge_phonecard_manual_telcos"
+            display-key="name"
+            value-key="key"
+            :error="$v.manualCard.telco.$error"
           >
             <template #label> Loại thẻ </template>
             <template #description>
-              {{ $getValidatorErrorMessage($v.manualCard.type, 'loại thẻ') }}
+              {{ $getValidatorErrorMessage($v.manualCard.telco, 'loại thẻ') }}
+            </template>
+          </SelectBase>
+
+          <SelectBase
+            v-model="manualCard.faceValue"
+            class="md:w-4/5 lg:w-3/5"
+            :options="faceValueOptionsForManualCard"
+            display-key="display"
+            value-key="value"
+            :error="$v.manualCard.faceValue.$error"
+          >
+            <template #label> Mệnh giá </template>
+            <template #description>
+              {{
+                $getValidatorErrorMessage($v.manualCard.faceValue, 'mệnh giá')
+              }}
             </template>
           </SelectBase>
 
           <InputBase
             key="
           "
-            v-model="manualCard.seri"
+            v-model="manualCard.serial"
             class="md:w-4/5 lg:w-3/5"
             placeholder="10007719909801"
-            :error="$v.manualCard.seri.$error"
+            :error="$v.manualCard.serial.$error"
           >
             <template #label> Số seri </template>
             <template #description>
-              {{ $getValidatorErrorMessage($v.manualCard.seri, 'số seri') }}
+              {{ $getValidatorErrorMessage($v.manualCard.serial, 'số seri') }}
             </template>
           </InputBase>
 
@@ -46,13 +63,14 @@
           >
             <template #label> Mã thẻ </template>
             <template #description>
-              {{ $getValidatorErrorMessage($v.manualCard.seri, 'mã thẻ') }}
+              {{ $getValidatorErrorMessage($v.manualCard.code, 'mã thẻ') }}
             </template>
           </InputBase>
         </div>
       </div>
       <template #bottom>
-        <div class="flex justify-end items-center gap-2">
+        <div class="flex justify-end items-center gap-3">
+          <MessageSimple :message="manualCard.message" />
           <ButtonPrimary
             theme="gray"
             :loading="manualCard.loading"
@@ -64,7 +82,7 @@
       </template>
     </GroupSeparated>
 
-    <GroupSeparated>
+    <!-- <GroupSeparated>
       <div class="space-y-4">
         <div>
           <HeadingBase4>
@@ -129,36 +147,21 @@
           </ButtonPrimary>
         </div>
       </template>
-    </GroupSeparated>
+    </GroupSeparated> -->
   </div>
 </template>
 
 <script>
+import { format } from '~/utils/number';
+
 export default {
   data() {
     return {
       manualCard: {
-        typeOptions: [
-          { display: 'Viettel', type: 'viettel' },
-          { display: 'Vinaphone', type: 'vinaphone' },
-        ],
         code: undefined,
-        type: undefined,
-        seri: undefined,
-        loading: false,
-        message: {
-          error: undefined,
-          success: undefined,
-        },
-      },
-      tsrCard: {
-        typeOptions: [
-          { display: 'Viettel', type: 'viettel' },
-          { display: 'Vinaphone', type: 'vinaphone' },
-        ],
-        code: undefined,
-        type: undefined,
-        seri: undefined,
+        telco: undefined,
+        serial: undefined,
+        faceValue: undefined,
         loading: false,
         message: {
           error: undefined,
@@ -167,28 +170,54 @@ export default {
       },
     };
   },
+  computed: {
+    faceValueOptionsForManualCard() {
+      const selectedTelco = this.recharge_phonecard_manual_telcos.find(
+        ({ key }) => key === this.manualCard.telco
+      );
+      if (!selectedTelco) return [];
+      return selectedTelco.faceValues.map((faceValue) => {
+        const display =
+          this.formatNumber(faceValue.value) +
+          'đ = ' +
+          this.formatNumber(
+            faceValue.value - (faceValue.value * faceValue.tax) / 100
+          ) +
+          ' Coin (đồng vàng)';
+        return {
+          ...faceValue,
+          display,
+        };
+      });
+    },
+    recharge_phonecard_manual_telcos() {
+      return this.$store.getters['app/getPublicSettingByKey'](
+        'recharge_phonecard_manual_telcos'
+      ).data;
+    },
+    recharge_phonecard_manual_enable() {
+      return this.$store.getters['app/getPublicSettingByKey'](
+        'recharge_phonecard_manual_enable'
+      ).data;
+    },
+  },
   validations() {
     return {
       manualCard: {
-        type: {
+        telco: {
           required: this.$rules.required,
         },
-        seri: {
-          required: this.$rules.required,
-        },
-        code: {
-          required: this.$rules.required,
-        },
-      },
-      tsrCard: {
-        type: {
-          required: this.$rules.required,
-        },
-        seri: {
+        serial: {
           required: this.$rules.required,
         },
         code: {
           required: this.$rules.required,
+        },
+        faceValue: {
+          required: this.$rules.required,
+          in: this.$rules.in(
+            this.faceValueOptionsForManualCard.map(({ value }) => value)
+          ),
         },
       },
     };
@@ -203,7 +232,28 @@ export default {
 
       if (this.$v.manualCard.$invalid) {
         this.manualCard.message.error = 'Vui lòng kiểm tra lại thông tin ';
+        return;
       }
+
+      this.manualCard.loading = true;
+      this.$axios
+        .$post('recharge-phonecard', {
+          serial: this.manualCard.serial,
+          code: this.manualCard.code,
+          faceValue: this.manualCard.faceValue,
+          telco: this.manualCard.telco,
+          port: 0,
+        })
+        .then(() => {
+          this.manualCard.message.success =
+            'Thành công, vui lòng kiểm tra trạng thái tại lịch sử ';
+        })
+        .catch(() => {
+          this.manualCard.message.error = 'Thất bại, vui lòng thử lại sau';
+        })
+        .finally(() => {
+          this.manualCard.loading = false;
+        });
     },
 
     rechargeTsrCard() {
@@ -217,6 +267,7 @@ export default {
         this.tsrCard.message.error = 'Vui lòng kiểm tra lại thông tin ';
       }
     },
+    formatNumber: format,
   },
 };
 </script>

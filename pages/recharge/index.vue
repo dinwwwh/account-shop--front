@@ -191,14 +191,10 @@ export default {
       });
     },
     recharge_phonecard_manual_telcos() {
-      return this.$store.getters['app/getPublicSettingByKey'](
-        'recharge_phonecard_manual_telcos'
-      ).data;
+      return this.$dynamicConfig('recharge-phonecard.manual_telcos');
     },
     recharge_phonecard_manual_enable() {
-      return this.$store.getters['app/getPublicSettingByKey'](
-        'recharge_phonecard_manual_enable'
-      ).data;
+      return this.$dynamicConfig('recharge-phonecard.port_manual_enable');
     },
   },
   validations() {

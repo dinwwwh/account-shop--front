@@ -1,17 +1,17 @@
 export const state = () => ({
-  publicSettings: [],
+  dynamicConfigs: [],
 });
 
 export const getters = {
-  getPublicSettingByKey({ publicSettings }) {
-    return (key) => publicSettings.find((setting) => setting.key === key);
+  getDynamicConfigByKey({ dynamicConfigs }) {
+    return (key) => dynamicConfigs.find((config) => config.key === key);
   },
 };
 
 export const actions = {};
 
 export const mutations = {
-  publicSettings(state, publicSettings) {
-    state.publicSettings = publicSettings ?? [];
+  dynamicConfigs(state, dynamicConfigs) {
+    state.dynamicConfigs = dynamicConfigs ?? [];
   },
 };

@@ -24,6 +24,7 @@ export default {
     '~/plugins/moment',
     '~/plugins/sanctum',
     '~/plugins/auth',
+    '~/plugins/dynamic-config',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

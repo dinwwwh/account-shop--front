@@ -187,55 +187,125 @@
                   <div
                     v-show="isShowDropdownMenuForDesktop"
                     class="
+                      z-40
                       origin-top-right
                       absolute
+                      top-full
                       right-0
-                      mt-2
-                      w-48
-                      rounded-md
-                      shadow-lg
-                      py-1
+                      w-60
+                      mt-3
+                      -mr-0.5
+                      sm:-mr-3.5
                       bg-white
-                      ring-1 ring-black ring-opacity-5
-                      focus:outline-none
-                      z-40
+                      rounded-lg
+                      shadow-md
+                      ring-1 ring-gray-900 ring-opacity-5
+                      font-normal
+                      text-sm text-gray-900
+                      divide-y divide-gray-100
                     "
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabindex="-1"
-                    @click="isShowDropdownMenuForDesktop = false"
                   >
-                    <NuxtLink
-                      id="user-menu-item-0"
-                      :to="{ name: 'profile' }"
-                      href="#"
-                      class="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                    >
-                      Profile
-                    </NuxtLink>
-                    <NuxtLink
-                      id="user-menu-item-0"
-                      :to="{ name: 'recharge' }"
-                      href="#"
-                      class="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                    >
-                      Nạp tiền
-                    </NuxtLink>
-                    <a
-                      id="user-menu-item-2"
-                      href="#logout"
-                      class="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      @click="$auth.logout()"
-                    >
-                      Đăng xuất
-                    </a>
+                    <p class="py-3 px-3.5 truncate">
+                      <span class="block mb-0.5 text-xs text-gray-500">
+                        Tài khoản
+                      </span>
+                      <span class="font-semibold">
+                        {{ $store.state.auth.profile.email }}
+                      </span>
+                      <span class="flex gap-1 items-end">
+                        {{ numberFormat($store.state.auth.profile.goldCoin) }}
+                        <AppCoinGold class="size-base" />
+                      </span>
+                    </p>
+                    <div class="py-1.5 px-3.5">
+                      <NuxtLink
+                        :to="{ name: 'recharge' }"
+                        class="
+                          group
+                          flex
+                          items-center
+                          py-1.5
+                          hover:text-teal-600
+                        "
+                      >
+                        <IconCash
+                          class="
+                            size-xl
+                            flex-none
+                            mr-3
+                            text-gray-400
+                            group-hover:text-indigo-600
+                          "
+                        />
+                        Nạp tiền
+                      </NuxtLink>
+                    </div>
+                    <div class="py-1.5 px-3.5">
+                      <NuxtLink
+                        :to="{ name: 'profile-history' }"
+                        class="
+                          group
+                          flex
+                          items-center
+                          py-1.5
+                          hover:text-teal-600
+                        "
+                      >
+                        <IconHistory
+                          class="
+                            size-lg
+                            flex-none
+                            mr-3
+                            text-gray-400
+                            group-hover:text-indigo-600
+                          "
+                        />
+                        Lịch sử
+                      </NuxtLink>
+                      <NuxtLink
+                        :to="{ name: 'profile' }"
+                        class="
+                          group
+                          flex
+                          items-center
+                          py-1.5
+                          hover:text-teal-600
+                        "
+                      >
+                        <IconUserCircle
+                          class="
+                            size-xl
+                            flex-none
+                            mr-3
+                            text-gray-400
+                            group-hover:text-indigo-600
+                          "
+                        />
+                        Tài khoản
+                      </NuxtLink>
+                      <a
+                        href="#logout"
+                        class="
+                          group
+                          flex
+                          items-center
+                          py-1.5
+                          hover:text-teal-600
+                        "
+                        @click="$auth.logout()"
+                      >
+                        <IconLogout
+                          class="
+                            size-xl
+                            flex-none
+                            mr-3
+                            text-gray-400
+                            group-hover:text-indigo-600
+                          "
+                        />
+                        Đăng xuất
+                      </a>
+                    </div>
                   </div>
                 </transition>
               </div>

@@ -32,12 +32,12 @@
                 _icon
               "
             />
-            <span class="truncate"> Profile </span>
+            <span class="truncate"> Tài khoản </span>
           </NuxtLink>
 
           <NuxtLink
             :to="{
-              name: 'profile-account',
+              name: 'profile-history',
             }"
             class="
               text-gray-700
@@ -52,18 +52,18 @@
               font-medium
             "
           >
-            <IconCog
+            <IconHistory
               class="
                 text-gray-400
                 group-hover:text-gray-500
                 flex-shrink-0
                 -ml-1
                 mr-3
-                size-2xl
+                size-xl
                 _icon
               "
             />
-            <span class="truncate"> Tài khoản </span>
+            <span class="truncate"> Lịch sử </span>
           </NuxtLink>
 
           <NuxtLink

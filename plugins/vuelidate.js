@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import {
   required,
+  requiredIf,
   minLength,
   maxLength,
   minValue,
@@ -23,6 +24,7 @@ import {
 Vue.use(Vuelidate);
 const rules = {
   required,
+  requiredIf,
   minLength,
   maxLength,
   minValue,

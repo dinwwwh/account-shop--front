@@ -151,6 +151,27 @@
                 <IconUserAlien class="size-2xl mr-4 text-cyan-200" />
                 Account
               </NuxtLink>
+
+              <NuxtLink
+                :to="{ name: 'admin-recharge-phonecard' }"
+                class="
+                  text-cyan-100
+                  hover:text-white hover:bg-cyan-600
+                  group
+                  flex
+                  items-center
+                  px-2
+                  py-2
+                  text-sm
+                  leading-6
+                  font-medium
+                  rounded-md
+                "
+                aria-current="page"
+              >
+                <IconCreditCard class="size-2xl mr-4 text-cyan-200" />
+                Recharge phonecard
+              </NuxtLink>
             </div>
             <div class="mt-6 pt-6">
               <div class="px-2 space-y-1">
@@ -337,6 +358,26 @@
               >
                 <IconUserAlien class="size-2xl mr-4 text-cyan-200" />
                 Account
+              </NuxtLink>
+              <NuxtLink
+                :to="{ name: 'admin-recharge-phonecard' }"
+                class="
+                  text-cyan-100
+                  hover:text-white hover:bg-cyan-600
+                  group
+                  flex
+                  items-center
+                  px-2
+                  py-2
+                  text-sm
+                  leading-6
+                  font-medium
+                  rounded-md
+                "
+                aria-current="page"
+              >
+                <IconCreditCard class="size-2xl mr-4 text-cyan-200" />
+                Recharge phonecard
               </NuxtLink>
             </div>
             <div class="mt-6 pt-6">

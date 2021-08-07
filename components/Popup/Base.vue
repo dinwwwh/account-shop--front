@@ -31,6 +31,7 @@
             rounded-lg
             shadow-xl
             max-w-[100wh]
+            md:min-w-[460px]
           "
         >
           <div class="sm:block absolute top-0 right-0 pt-4 pr-4">

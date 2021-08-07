@@ -25,6 +25,7 @@ export default {
     '~/plugins/sanctum',
     '~/plugins/auth',
     '~/plugins/dynamic-config',
+    '~/plugins/recharge-phonecard',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

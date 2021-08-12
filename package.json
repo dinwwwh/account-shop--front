@@ -29,10 +29,13 @@
     "create-file-list": "^1.1.0",
     "format-number": "^3.0.0",
     "kebab-case": "^1.0.1",
+    "luxon": "1.28.0",
     "moment": "^2.29.1",
     "nuxt": "^2.15.3",
     "type-check": "^0.4.0",
-    "vuelidate": "^0.7.6"
+    "vue-datetime": "^1.0.0-beta.14",
+    "vuelidate": "^0.7.6",
+    "weekstart": "^1.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",

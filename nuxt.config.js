@@ -26,6 +26,7 @@ export default {
     '~/plugins/auth',
     '~/plugins/dynamic-config',
     '~/plugins/recharge-phonecard',
+    '~/plugins/vue-datetime',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

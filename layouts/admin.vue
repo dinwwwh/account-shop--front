@@ -172,6 +172,27 @@
                 <IconCreditCard class="size-2xl mr-4 text-cyan-200" />
                 Recharge phonecard
               </NuxtLink>
+
+              <NuxtLink
+                :to="{ name: 'admin-coupon' }"
+                class="
+                  text-cyan-100
+                  hover:text-white hover:bg-cyan-600
+                  group
+                  flex
+                  items-center
+                  px-2
+                  py-2
+                  text-sm
+                  leading-6
+                  font-medium
+                  rounded-md
+                "
+                aria-current="page"
+              >
+                <IconTicket class="size-2xl mr-4 text-cyan-200" />
+                Coupon
+              </NuxtLink>
             </div>
             <div class="mt-6 pt-6">
               <div class="px-2 space-y-1">
@@ -378,6 +399,27 @@
               >
                 <IconCreditCard class="size-2xl mr-4 text-cyan-200" />
                 Recharge phonecard
+              </NuxtLink>
+
+              <NuxtLink
+                :to="{ name: 'admin-coupon' }"
+                class="
+                  text-cyan-100
+                  hover:text-white hover:bg-cyan-600
+                  group
+                  flex
+                  items-center
+                  px-2
+                  py-2
+                  text-sm
+                  leading-6
+                  font-medium
+                  rounded-md
+                "
+                aria-current="page"
+              >
+                <IconTicket class="size-2xl mr-4 text-cyan-200" />
+                Coupon
               </NuxtLink>
             </div>
             <div class="mt-6 pt-6">

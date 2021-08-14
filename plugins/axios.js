@@ -11,6 +11,11 @@ export default function ({ $axios, redirect, error, $typeCheck }, inject) {
       return;
     }
 
+    if (response.status === 419) {
+      $axios.$get('profile');
+      return;
+    }
+
     if (response.status === 500) {
       error(500);
     }

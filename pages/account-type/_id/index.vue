@@ -60,6 +60,14 @@
 
         <AccountActionList :account-actions="accountActions" />
       </div>
+
+      <AccountTypeCouponSection
+        v-model="coupons"
+        class="mt-16"
+        :account-type="accountType"
+        :can-attach="canAttachCoupon"
+        :can-detach="canDetachCoupon"
+      />
     </FrameBox>
   </div>
 </template>
@@ -71,6 +79,8 @@ export default {
     const [
       { data: accountType },
       canUpdateAccountType,
+      canAttachCoupon,
+      canDetachCoupon,
       canCreateAccountInfo,
       canCreateAccountAction,
     ] = await Promise.all([
@@ -81,10 +91,13 @@ export default {
             'accountInfos',
             'usableUsers',
             'approvableUsers',
+            'coupons',
           ],
         },
       }),
       $auth.can('update', `AccountType:${params.id}`),
+      $auth.can('attachCoupon', `AccountType:${params.id}`),
+      $auth.can('detachCoupon', `AccountType:${params.id}`),
       $auth.can('create', `AccountInfo,AccountType:${params.id}`),
       $auth.can('create', `AccountAction,AccountType:${params.id}`),
     ]);
@@ -101,11 +114,14 @@ export default {
 
     return {
       canUpdateAccountType,
+      canAttachCoupon,
+      canDetachCoupon,
       canCreateAccountInfo,
       canCreateAccountAction,
       accountType,
       accountInfos: accountType.accountInfos,
       accountActions: accountType.accountActions,
+      coupons: accountType.coupons,
       message: {
         error: undefined,
         success: undefined,

@@ -46,6 +46,18 @@ const rules = {
   equal(value) {
     return (val) => !helpers.req(val) || value === val;
   },
+  gte(value) {
+    return (val) => {
+      if (!value) return true;
+      return !helpers.req(val) || value <= val;
+    };
+  },
+  lte(value) {
+    return (val) => {
+      if (!value) return true;
+      return !helpers.req(val) || value >= val;
+    };
+  },
 };
 const messages = {
   required: ':name là bắt buộc.',
@@ -67,6 +79,8 @@ const messages = {
   url: ':name phải là một địa chỉ URL hợp lệ.',
   in: ':name có giá trị không hợp lệ',
   equal: ':name có giá trị không hợp lệ',
+  gte: ':name giá trị phải lớn hơn',
+  lte: ':name giá trị phải nhỏ hơn',
 };
 
 export default function (context, inject) {

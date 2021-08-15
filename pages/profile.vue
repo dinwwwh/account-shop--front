@@ -125,6 +125,37 @@
             />
             <span class="truncate"> Thông báo </span>
           </NuxtLink>
+
+          <NuxtLink
+            :to="{
+              name: 'profile-bought-accounts',
+            }"
+            class="
+              text-gray-700
+              hover:text-gray-800 hover:bg-gray-50
+              group
+              rounded-md
+              px-3
+              py-2
+              flex
+              items-center
+              text-sm
+              font-medium
+            "
+          >
+            <IconUserAlien
+              class="
+                text-gray-400
+                group-hover:text-gray-500
+                flex-shrink-0
+                -ml-1
+                mr-3
+                size-xl
+                _icon
+              "
+            />
+            <span class="truncate"> Tài khoản đã mua </span>
+          </NuxtLink>
         </nav>
       </aside>
 

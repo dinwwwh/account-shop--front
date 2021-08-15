@@ -9,6 +9,8 @@
             <thead class="bg-gray-50">
               <tr>
                 <th
+                  v-for="field in fields"
+                  :key="field"
                   scope="col"
                   class="
                     px-6
@@ -20,52 +22,21 @@
                     tracking-wider
                   "
                 >
-                  Game/Username
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
-                  Price/Cost
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
-                  Status
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
-                  Owner
-                </th>
-                <th scope="col" class="relative px-6 py-3">
-                  <span class="sr-only">actions</span>
+                  <template v-if="field === 'game/username'">
+                    game/username
+                  </template>
+                  <template v-else-if="field === 'price/cost'">
+                    price/cost
+                  </template>
+                  <template v-else-if="field === 'sold-price'">
+                    sold price
+                  </template>
+                  <template v-else-if="field === 'sold-at'"> sold at </template>
+                  <template v-else-if="field === 'status'"> status </template>
+                  <template v-else-if="field === 'owner'"> owner </template>
+                  <template v-else-if="field === 'actions'">
+                    <span class="sr-only">actions</span>
+                  </template>
                 </th>
               </tr>
             </thead>
@@ -75,6 +46,7 @@
                 v-for="account in accounts"
                 :key="account.id"
                 :account="account"
+                :fields="fields"
               />
             </tbody>
           </table>
@@ -102,6 +74,17 @@ export default {
     accounts: {
       type: Array,
       required: true,
+    },
+    fields: {
+      type: Array,
+      required: true,
+      default: () => [
+        'game/username',
+        'price/cost',
+        'status',
+        'owner',
+        'actions',
+      ],
     },
   },
 };

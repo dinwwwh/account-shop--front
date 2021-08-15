@@ -1,6 +1,9 @@
 <template>
   <div class="space-y-8">
-    <AccountTable :accounts="accounts" />
+    <AccountTable
+      :accounts="accounts"
+      :fields="['game/username', 'sold-price', 'sold-at', 'actions']"
+    />
 
     <PaginationCenteredNumbers
       v-if="lastPage > 1"
@@ -16,7 +19,10 @@ async function fetchData($axios, page = 1) {
   return await $axios.$get('account/bought-by-me', {
     params: {
       page,
-      _requiredModelRelationships: ['representativeImage', 'accountType.game'],
+      _requiredModelRelationships: [
+        'representativeImage',
+        'accountType.game.representativeImage',
+      ],
     },
   });
 }

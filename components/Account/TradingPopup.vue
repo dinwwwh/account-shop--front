@@ -19,6 +19,7 @@
           <InputBase v-model="couponCode" placeholder="Mã giảm giá ..." />
           <ButtonPrimary size="xs" @click="checkCoupon"> Check </ButtonPrimary>
         </div>
+        <DescriptionBase>{{ description }}</DescriptionBase>
       </div>
 
       <div class="space-y-2">
@@ -64,6 +65,7 @@ export default {
         error: undefined,
         success: undefined,
       },
+      description: undefined,
     };
   },
   computed: {
@@ -81,7 +83,7 @@ export default {
     buy() {
       this.buying = true;
       this.$axios
-        .$post(`account-trading/buy/${this.account.id}`, {
+        .$patch(`account/${this.account.id}/buy`, {
           couponCode: this.couponCode,
         })
         .then(() => {
@@ -98,9 +100,14 @@ export default {
     },
     checkCoupon() {
       this.$axios
-        .$get(`account-trading/detail-price/${this.account.id}`)
-        .then(({ data }) => {
-          this.price = data.cost + data.fee;
+        .$get(`account/${this.account.id}/price`, {
+          params: {
+            couponCode: this.couponCode,
+          },
+        })
+        .then(({ data: { cost, fee } }) => {
+          const price = this.formatNumber(cost + fee);
+          this.description = `Nếu sử dụng phiếu giảm giá này bạn sẽ mua nick này với giá ${price} coin`;
         })
         .catch();
     },

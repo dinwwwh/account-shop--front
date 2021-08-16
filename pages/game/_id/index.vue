@@ -28,7 +28,7 @@
 <script>
 async function fetchData($axios, params = {}, query = {}) {
   const [{ data: accounts, meta }] = await Promise.all([
-    $axios.$get(`game/${params.id}/account`, {
+    $axios.$get(`game/${params.id}/account/buyable`, {
       params: {
         _requiredModelRelationships: ['representativeImage'],
         page: query.page ?? 1,

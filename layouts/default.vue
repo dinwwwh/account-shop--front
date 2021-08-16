@@ -1,5 +1,8 @@
 <template>
-  <div class="h-screen w-screen overflow-x-hidden overflow-y-auto">
+  <div class="max-h-[100vh] max-w-[100vw] sm:overflow-x-hidden overflow-y-auto">
+    <!-- Tip add classes to outermost body tag -->
+    <body class="max-h-[100vh] max-w-[100vw] overflow-hidden"></body>
+
     <header class="shadow border-b border-solid border-gray-300">
       <nav class="bg-white">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">

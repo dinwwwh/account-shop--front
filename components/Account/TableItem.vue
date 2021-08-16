@@ -38,9 +38,9 @@
       <span
         v-else-if="field === 'status'"
         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-        :class="getClassNameByStatusCode(account.statusCode)"
+        :class="getClassNameByStatusCode(account.latestAccountStatus.code)"
       >
-        {{ getStatusCodeMeaning(account.statusCode) }}
+        {{ getStatusCodeMeaning(account.latestAccountStatus.code) }}
       </span>
 
       <!-- SOLD PRICE -->

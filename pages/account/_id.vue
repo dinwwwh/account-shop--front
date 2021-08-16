@@ -2,7 +2,16 @@
   <div class="py-6 space-y-4">
     <!-- Tittle -->
     <div>
-      <HeadingBase2> Tài khoản #{{ account.id }} </HeadingBase2>
+      <HeadingBase2>
+        Tài khoản #{{ account.id }}
+
+        <span
+          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+          :class="getClassNameByStatusCode(account.latestAccountStatus.code)"
+        >
+          {{ getStatusCodeMeaning(account.latestAccountStatus.code) }}
+        </span>
+      </HeadingBase2>
       <div class="flex items-center gap-2">
         <div class="flex-shrink-0">
           <img class="h-8 w-8 rounded-full" :src="gameImagePath" />
@@ -46,6 +55,11 @@
 </template>
 
 <script>
+import {
+  getStatusCodeMeaning,
+  getClassNameByStatusCode,
+} from '~/utils/status-code';
+
 export default {
   async asyncData({ $axios, $auth, params }) {
     const [{ data: account }, canUpdateAccount] = await Promise.all([
@@ -59,6 +73,7 @@ export default {
             'accountType.accountInfos.rule',
             'gameInfos',
             'accountInfos',
+            'latestAccountStatus',
           ],
         },
       }),
@@ -81,6 +96,10 @@ export default {
     gameImagePath() {
       return this.account.accountType.game?.representativeImage?.path;
     },
+  },
+  methods: {
+    getStatusCodeMeaning,
+    getClassNameByStatusCode,
   },
 };
 </script>

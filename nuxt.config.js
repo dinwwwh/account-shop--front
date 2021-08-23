@@ -1,4 +1,5 @@
 export default {
+  ssr: false, // Sever side rendering
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'account-shop--front',
@@ -61,5 +62,22 @@ export default {
   build: {},
 
   // Public config in runtime
-  publicRuntimeConfig: {},
+  publicRuntimeConfig: {
+    axios: {
+      host: process.env.PUBLIC_API_PORT,
+      port: process.env.PUBLIC_API_PORT,
+      prefix: process.env.PUBLIC_API_PREFIX,
+      credentials: true,
+    },
+  },
+
+  // Private config
+  privateRuntimeConfig: {
+    axios: {
+      host: process.env.PRIVATE_API_PORT,
+      port: process.env.PRIVATE_API_PORT,
+      prefix: process.env.PRIVATE_API_PREFIX,
+      credentials: true,
+    },
+  },
 };

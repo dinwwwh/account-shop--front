@@ -49,24 +49,13 @@ export default {
     '@nuxtjs/axios',
   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  // Used as fallback if no runtime config is provided
-  axios: {
-    host: process.env.API_PORT,
-    port: process.env.API_PORT,
-    prefix: process.env.API_PREFIX,
-    credentials: true,
-  },
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
   // Public config in runtime
   publicRuntimeConfig: {
     axios: {
-      host: process.env.PUBLIC_API_PORT,
-      port: process.env.PUBLIC_API_PORT,
-      prefix: process.env.PUBLIC_API_PREFIX,
+      baseURL: process.env.PUBLIC_API_BASE_URL,
       credentials: true,
     },
   },
@@ -74,9 +63,7 @@ export default {
   // Private config
   privateRuntimeConfig: {
     axios: {
-      host: process.env.PRIVATE_API_PORT,
-      port: process.env.PRIVATE_API_PORT,
-      prefix: process.env.PRIVATE_API_PREFIX,
+      baseURL: process.env.PRIVATE_API_BASE_URL,
       credentials: true,
     },
   },

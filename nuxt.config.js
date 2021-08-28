@@ -20,12 +20,12 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/app',
+    '~/plugins/auth',
     '~/plugins/type-check',
     '~/plugins/axios',
     '~/plugins/vuelidate',
     '~/plugins/moment',
     '~/plugins/sanctum',
-    '~/plugins/auth',
     '~/plugins/dynamic-config',
     '~/plugins/recharge-phonecard',
     '~/plugins/vue-datetime',

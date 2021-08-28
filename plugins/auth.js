@@ -1,5 +1,6 @@
-export default function ({ $axios, store: { commit, getters } }, inject) {
-  init();
+// ASYNC since this plugins need load profile info firstly
+export default async function ({ $axios, store: { commit, getters } }, inject) {
+  await initAuth();
   inject('auth', {
     login,
     logout,
@@ -8,10 +9,6 @@ export default function ({ $axios, store: { commit, getters } }, inject) {
     hasAnyPermission,
     hasAllPermissions,
   });
-
-  function init() {
-    initAuth();
-  }
 
   async function initAuth() {
     const { data: profile } = await $axios.$get('profile', {

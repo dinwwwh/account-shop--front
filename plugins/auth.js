@@ -1,4 +1,5 @@
 export default function ({ $axios, store: { commit, getters } }, inject) {
+  init();
   inject('auth', {
     login,
     logout,
@@ -7,6 +8,20 @@ export default function ({ $axios, store: { commit, getters } }, inject) {
     hasAnyPermission,
     hasAllPermissions,
   });
+
+  function init() {
+    initAuth();
+  }
+
+  async function initAuth() {
+    const { data: profile } = await $axios.$get('profile', {
+      params: {
+        _requiredModelRelationships: ['roles.permissions', 'permissions'],
+      },
+      validateStatus: () => true,
+    });
+    commit('auth/user', profile);
+  }
 
   async function login(email, password, remember = false) {
     const profile = await $axios.$post(

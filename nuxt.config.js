@@ -52,11 +52,15 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
+  // Axios module: https://axios.nuxtjs.org/options
+  axios: {
+    credentials: true,
+  },
+
   // Public config in runtime
   publicRuntimeConfig: {
     axios: {
       baseURL: process.env.PUBLIC_API_BASE_URL,
-      credentials: true,
     },
   },
 
@@ -64,7 +68,6 @@ export default {
   privateRuntimeConfig: {
     axios: {
       baseURL: process.env.PRIVATE_API_BASE_URL,
-      credentials: true,
     },
   },
 };

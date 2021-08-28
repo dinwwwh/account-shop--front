@@ -1,8 +1,5 @@
 <template>
   <div class="max-h-[100vh] max-w-[100vw] sm:overflow-x-hidden overflow-y-auto">
-    <!-- Tip add classes to outermost body tag -->
-    <body class="max-h-[100vh] max-w-[100vw] overflow-hidden"></body>
-
     <header class="shadow border-b border-solid border-gray-300">
       <nav class="bg-white">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
@@ -530,6 +527,10 @@ export default {
       return this.$store.state.auth.profile ?? {};
     },
   },
+  mounted() {
+    const bodyTag = document.getElementsByTagName('body')[0];
+    bodyTag.classList.add('fix-overflow-for-body');
+  },
   methods: {
     numberFormat: format,
     onInputAtSearch() {},
@@ -546,5 +547,11 @@ export default {
 ._mobile-menu-item.nuxt-link-exact-active {
   @apply bg-indigo-50 border-indigo-500 text-indigo-700 cursor-default;
   @apply hover:bg-indigo-50 hover:border-indigo-500 hover:text-gray-600;
+}
+</style>
+
+<style>
+.fix-overflow-for-body {
+  @apply max-h-[100vh] max-w-[100vw] overflow-hidden;
 }
 </style>

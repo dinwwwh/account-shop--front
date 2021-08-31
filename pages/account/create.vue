@@ -129,7 +129,7 @@
 import { required } from 'vuelidate/lib/validators';
 
 export default {
-  layout: 'admin',
+  // layout: 'admin',
   async asyncData({ $axios }) {
     const { data: games } = await $axios.$get('game/all/usable', {
       params: {

@@ -111,7 +111,7 @@
             <!-- List main menu for mobile -->
             <div class="px-2 space-y-1">
               <NuxtLink
-                :to="{ name: 'game-manage' }"
+                :to="{ name: 'admin-game' }"
                 class="
                   text-cyan-100
                   hover:text-white hover:bg-cyan-600
@@ -132,7 +132,7 @@
               </NuxtLink>
 
               <NuxtLink
-                :to="{ name: 'account-manage' }"
+                :to="{ name: 'admin-account' }"
                 class="
                   text-cyan-100
                   hover:text-white hover:bg-cyan-600
@@ -340,7 +340,7 @@
             <!-- List main menu for desktop -->
             <div class="px-2 space-y-1">
               <NuxtLink
-                :to="{ name: 'game-manage' }"
+                :to="{ name: 'admin-game' }"
                 class="
                   text-cyan-100
                   hover:text-white hover:bg-cyan-600
@@ -361,7 +361,7 @@
               </NuxtLink>
 
               <NuxtLink
-                :to="{ name: 'account-manage' }"
+                :to="{ name: 'admin-account' }"
                 class="
                   text-cyan-100
                   hover:text-white hover:bg-cyan-600

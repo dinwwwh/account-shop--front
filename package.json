@@ -31,7 +31,7 @@
     "kebab-case": "^1.0.1",
     "luxon": "1.28.0",
     "moment": "^2.29.1",
-    "nuxt": "^2.15.3",
+    "nuxt": "2.15.8",
     "type-check": "^0.4.0",
     "vue-datetime": "^1.0.0-beta.14",
     "vuelidate": "^0.7.6",

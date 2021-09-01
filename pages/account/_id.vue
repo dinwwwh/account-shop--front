@@ -28,6 +28,12 @@
     <!-- Images -->
     <AccountImageSection :image-paths="imagePaths" />
 
+    <!-- Approval -->
+    <AccountApprovalSection
+      v-if="account.canStartApproving || account.canEndApproving"
+      :account="account"
+    />
+
     <!-- Management -->
     <GroupBase>
       <AccountManagementSection :account="account" />
@@ -61,28 +67,25 @@ import {
 } from '~/utils/status-code';
 
 export default {
-  async asyncData({ $axios, $auth, params }) {
-    const [{ data: account }, canUpdateAccount] = await Promise.all([
-      $axios.$get(`account/${params.id}`, {
-        params: {
-          _requiredModelRelationships: [
-            'representativeImage',
-            'otherImages',
-            'accountType.game.gameInfos.rule',
-            'accountType.game.representativeImage',
-            'accountType.accountInfos.rule',
-            'gameInfos',
-            'accountInfos',
-            'latestAccountStatus',
-          ],
-        },
-      }),
-      $auth.can('update', `Account:${params.id}`),
-    ]);
+  async asyncData({ $axios, params }) {
+    const { data: account } = await $axios.$get(`account/${params.id}`, {
+      params: {
+        _requiredModelRelationships: [
+          'representativeImage',
+          'otherImages',
+          'accountType.game.gameInfos.rule',
+          'accountType.game.representativeImage',
+          'accountType.accountInfos.rule',
+          'gameInfos',
+          'accountInfos',
+          'latestAccountStatus',
+        ],
+        _isRequiredPermissions: true,
+      },
+    });
 
     return {
       account,
-      canUpdateAccount,
     };
   },
   computed: {

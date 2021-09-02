@@ -36,6 +36,7 @@
       placeholder="*****"
       :rules="{
         required: $rules.required,
+        minLength: $rules.minLength(8),
       }"
       @emit-validator="validators[2] = $event"
     >

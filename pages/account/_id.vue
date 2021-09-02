@@ -25,6 +25,18 @@
       </div>
     </div>
 
+    <MessageBaseError
+      v-if="
+        account.latestAccountStatus.code >= 300 &&
+        account.latestAccountStatus.code <= 399
+      "
+    >
+      {{
+        'Lý do bị từ chối: ' +
+        (account.latestAccountStatus.shortDescription || '(không có)')
+      }}
+    </MessageBaseError>
+
     <!-- Images -->
     <AccountImageSection :image-paths="imagePaths" />
 

@@ -1,6 +1,7 @@
 const statusCodeMeanings = {
   0: 'chờ duyệt',
   200: 'đang duyệt',
+  300: 'bị từ chối',
   440: 'đang bán',
   480: 'đang bán',
   600: 'đang kiểm tra',

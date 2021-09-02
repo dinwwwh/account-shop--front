@@ -63,14 +63,37 @@
         <HeadingBase4 class="text-center"> Kết thúc phê duyệt </HeadingBase4>
 
         <SelectBase
-          v-model="approvingResult"
-          :options="['thành công', 'thất bại']"
+          v-model="endApprovingResult.success"
+          :options="[
+            {
+              value: true,
+              display: 'Thành công',
+            },
+            {
+              value: false,
+              display: 'Thất bại',
+            },
+          ]"
+          display-key="display"
+          value-key="value"
+          :error="$v.endApprovingResult.success.$error"
         >
           <template #label> Kết quả </template>
+          <template #description>
+            {{
+              $getValidatorErrorMessage(
+                $v.endApprovingResult.success,
+                'Kết quả'
+              )
+            }}
+          </template>
         </SelectBase>
 
-        <TextareaBase v-model="approvingDescription">
+        <TextareaBase v-model="endApprovingResult.description">
           <template #label> Mô tả (optional) </template>
+          <template #description>
+            Không được chứa các thông tin nhạy cảm.
+          </template>
         </TextareaBase>
 
         <MessageBase :message="endApprovingMessage" />
@@ -108,10 +131,23 @@ export default {
       isLoadEndApproving: false,
       isShowEndApproving: false,
       approvingResult: undefined,
-      approvingDescription: undefined,
       endApprovingMessage: {
         success: undefined,
         error: undefined,
+      },
+      endApprovingResult: {
+        success: undefined,
+        description: undefined,
+      },
+    };
+  },
+  validations() {
+    const { required } = this.$rules;
+    return {
+      endApprovingResult: {
+        success: {
+          required,
+        },
       },
     };
   },
@@ -127,10 +163,21 @@ export default {
         success: undefined,
         error: undefined,
       };
+
+      this.$v.endApprovingResult.$touch();
+      if (this.$v.endApprovingResult.$invalid) {
+        this.endApprovingMessage.error = 'Vui lòng kiểm tra lại thông tin.';
+        return;
+      }
+
       this.isLoadEndApproving = true;
       try {
-        await this.$axios.$post(`account/end-approving/${this.account.id}`);
+        await this.$axios.$post(
+          `account/end-approving/${this.account.id}`,
+          this.endApprovingResult
+        );
         this.endApprovingMessage.success = 'Phê duyệt thành công!';
+        this.$nuxt.refresh();
       } catch (error) {
         this.endApprovingMessage.error = 'Thất bại vui lòng thử lại sau.';
       }

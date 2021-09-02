@@ -111,6 +111,27 @@
             <!-- List main menu for mobile -->
             <div class="px-2 space-y-1">
               <NuxtLink
+                :to="{ name: 'admin' }"
+                class="
+                  text-cyan-100
+                  hover:text-white hover:bg-cyan-600
+                  group
+                  flex
+                  items-center
+                  px-2
+                  py-2
+                  text-sm
+                  leading-6
+                  font-medium
+                  rounded-md
+                "
+                aria-current="page"
+              >
+                <IconViewGrid class="size-2xl mr-4 text-cyan-200" />
+                Thống kê
+              </NuxtLink>
+
+              <NuxtLink
                 :to="{ name: 'admin-game' }"
                 class="
                   text-cyan-100
@@ -339,6 +360,27 @@
           >
             <!-- List main menu for desktop -->
             <div class="px-2 space-y-1">
+              <NuxtLink
+                :to="{ name: 'admin' }"
+                class="
+                  text-cyan-100
+                  hover:text-white hover:bg-cyan-600
+                  group
+                  flex
+                  items-center
+                  px-2
+                  py-2
+                  text-sm
+                  leading-6
+                  font-medium
+                  rounded-md
+                "
+                aria-current="page"
+              >
+                <IconViewGrid class="size-2xl mr-4 text-cyan-200" />
+                Thống kê
+              </NuxtLink>
+
               <NuxtLink
                 :to="{ name: 'admin-game' }"
                 class="

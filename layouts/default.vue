@@ -204,6 +204,7 @@
                       text-sm text-gray-900
                       divide-y divide-gray-100
                     "
+                    @click="isShowDropdownMenuForDesktop = false"
                   >
                     <p class="py-3 px-3.5 truncate">
                       <span class="block mb-0.5 text-xs text-gray-500">

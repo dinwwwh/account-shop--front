@@ -1,5 +1,11 @@
 <template>
   <div class="py-6 space-y-8">
+    <!-- Background -->
+    <div
+      class="h-96 w-full bg-center bg-cover bg-fixed opacity-80 rounded-lg"
+      style="background-image: url('/bg.jpg')"
+    ></div>
+
     <HeadingBase1> Danh sách game </HeadingBase1>
 
     <ul class="md:grid-cols-2 xl:grid-cols-3 grid grid-cols-1 gap-x-6 gap-y-8">

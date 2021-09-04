@@ -58,6 +58,16 @@ const rules = {
       return !helpers.req(val) || value >= val;
     };
   },
+  json(value) {
+    if (!helpers.req(value)) return true;
+
+    try {
+      JSON.parse(value);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
 };
 const messages = {
   required: ':name là bắt buộc.',
@@ -81,6 +91,7 @@ const messages = {
   equal: ':name có giá trị không hợp lệ',
   gte: ':name giá trị phải lớn hơn',
   lte: ':name giá trị phải nhỏ hơn',
+  json: ':name phải tuân theo cú pháp JSON',
 };
 
 export default function (context, inject) {

@@ -16,18 +16,25 @@
           block
           w-full
           sm:text-sm
-          border-gray-300
           rounded-md
         "
         :class="{
           'bg-gray-100 cursor-not-allowed': !canEdit,
+          'border-gray-300': !error,
+          'border-red-300': error,
         }"
         :placeholder="placeholder"
         :disabled="!canEdit"
       />
     </div>
     <!-- Description -->
-    <p class="mt-2 text-sm text-gray-500">
+    <p
+      class="mt-2 text-sm"
+      :class="{
+        'text-red-500': error,
+        'text-gray-500': !error,
+      }"
+    >
       <slot name="description"></slot>
     </p>
   </div>
@@ -60,6 +67,10 @@ export default {
     canEdit: {
       type: Boolean,
       default: true,
+    },
+    error: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

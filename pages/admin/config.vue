@@ -16,7 +16,9 @@ export default {
   layout: 'admin',
   async asyncData({ $axios, query }) {
     const { data: configs, meta } = await $axios.$get('config', {
-      params: {},
+      params: {
+        _isRequiredPermissions: true,
+      },
     });
 
     return {

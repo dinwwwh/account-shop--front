@@ -1,6 +1,12 @@
 <template>
   <div>
-    <ButtonPrimary size="xs" @click="isShowUpdate = true"> Sửa </ButtonPrimary>
+    <ButtonPrimary
+      v-if="config.canUpdate"
+      size="xs"
+      @click="isShowUpdate = true"
+    >
+      Sửa
+    </ButtonPrimary>
 
     <!-- Update screen -->
     <PopupBase v-model="isShowUpdate">

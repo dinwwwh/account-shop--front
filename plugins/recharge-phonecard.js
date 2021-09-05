@@ -14,8 +14,10 @@ export default function ({ $axios, $dynamicConfig }, inject) {
   }
 
   function getTelcoName(key) {
-    return $dynamicConfig('recharge-phonecard.manual_telcos').find(
-      (telco) => telco.key === key
-    )?.name;
+    return (
+      $dynamicConfig('recharge-phonecard.manual_telcos').find(
+        (telco) => telco.key === key
+      )?.name ?? key
+    );
   }
 }

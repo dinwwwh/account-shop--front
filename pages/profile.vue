@@ -37,7 +37,7 @@
 
           <NuxtLink
             :to="{
-              name: 'profile-history',
+              name: 'profile-recharge-phonecard',
             }"
             class="
               text-gray-700
@@ -63,7 +63,7 @@
                 _icon
               "
             />
-            <span class="truncate"> Lịch sử </span>
+            <span class="truncate"> Lịch sử nạp thẻ </span>
           </NuxtLink>
 
           <NuxtLink

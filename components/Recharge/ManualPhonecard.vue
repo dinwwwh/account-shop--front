@@ -174,17 +174,19 @@ export default {
           switch (status) {
             case 0:
             case 10:
-              this.message.info =
+              this.manualCard.message.info =
                 'Thẻ đang được phê duyệt vui lòng kiểm tra trạng thái bên lịch sử.';
               break;
             case 20:
-              this.message.success = 'Thành công vui lòng tải lại trang.';
+              this.manualCard.message.success =
+                'Thành công vui lòng tải lại trang.';
               break;
             case 30:
-              this.message.error = 'Thẻ sai hoặc hệ thống đang bảo trì.';
+              this.manualCard.message.error =
+                'Thẻ sai hoặc hệ thống đang bảo trì.';
               break;
             case 40:
-              this.message.error = 'Thẻ sai mệnh giá.';
+              this.manualCard.message.error = 'Thẻ sai mệnh giá.';
               break;
           }
         })

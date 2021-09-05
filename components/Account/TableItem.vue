@@ -59,7 +59,15 @@
       </span>
 
       <!-- ACTIONS -->
-      <div v-else-if="field === 'actions'">
+      <div v-else-if="field === 'actions'" class="flex gap-2">
+        <ButtonPrimary
+          v-if="account.buyerId === $store.state.auth.profile.id"
+          size="xs"
+          @click="isShowInfo = true"
+        >
+          Xem TT
+        </ButtonPrimary>
+
         <NuxtLink
           :to="{
             name: 'account-id',
@@ -73,6 +81,45 @@
         </NuxtLink>
       </div>
     </td>
+
+    <PopupBase
+      v-if="account.buyerId === $store.state.auth.profile.id"
+      v-model="isShowInfo"
+    >
+      <div class="xs:min-w-[420px] space-y-4">
+        <HeadingBase5>Thông tin acc #{{ account.id }}</HeadingBase5>
+
+        <ul class="divide-y divide-yellow-500 mx-auto">
+          <li class="flex justify-between items-end gap-4">
+            <div class="text-lg text-gray-600 font-medium">Username:</div>
+            <div class="text-gray-500">{{ account.username }}</div>
+          </li>
+          <li class="flex justify-between items-end gap-4">
+            <div class="text-lg text-gray-600 font-medium">Password:</div>
+            <div class="text-gray-500">{{ account.password }}</div>
+          </li>
+
+          <li
+            v-for="accountInfo in account.accountInfos"
+            :key="accountInfo.id"
+            class="flex justify-between items-end gap-4"
+          >
+            <div class="text-lg text-gray-600 font-medium">
+              {{ accountInfo.name }}:
+            </div>
+            <div class="text-gray-500">
+              {{ accountInfo.pivot.values.toString() }}
+            </div>
+          </li>
+        </ul>
+
+        <div class="flex justify-end gap-3">
+          <ButtonPrimary theme="red" @click="isShowInfo = false">
+            Huỷ
+          </ButtonPrimary>
+        </div>
+      </div>
+    </PopupBase>
   </tr>
 </template>
 
@@ -97,6 +144,11 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  data() {
+    return {
+      isShowInfo: false,
+    };
   },
   computed: {
     game() {

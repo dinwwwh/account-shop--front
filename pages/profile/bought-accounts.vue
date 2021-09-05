@@ -22,6 +22,7 @@ async function fetchData($axios, page = 1) {
       _requiredModelRelationships: [
         'representativeImage',
         'accountType.game.representativeImage',
+        'accountInfos',
       ],
     },
   });

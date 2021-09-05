@@ -171,15 +171,21 @@ export default {
           port: 0,
         })
         .then(({ data: { status } }) => {
-          if (status === 20) {
-            this.manualCard.message.success =
-              'Thành công vui lòng tải lại trang.';
-          } else if (status === 0) {
-            this.manualCard.message.info =
-              'Thẻ đang được phê duyệt vui lòng kiêm tra trạng thái bên lịch sử.';
-          } else {
-            this.manualCard.message.error =
-              'Thẻ không chính xác hoặc hệ thống bảo trì.';
+          switch (status) {
+            case 0:
+            case 10:
+              this.message.info =
+                'Thẻ đang được phê duyệt vui lòng kiểm tra trạng thái bên lịch sử.';
+              break;
+            case 20:
+              this.message.success = 'Thành công vui lòng tải lại trang.';
+              break;
+            case 30:
+              this.message.error = 'Thẻ sai hoặc hệ thống đang bảo trì.';
+              break;
+            case 40:
+              this.message.error = 'Thẻ sai mệnh giá.';
+              break;
           }
         })
         .catch(() => {

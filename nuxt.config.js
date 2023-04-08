@@ -60,6 +60,9 @@ export default {
 
   // Public config in runtime
   publicRuntimeConfig: {
+    app: {
+      baseURL: process.env.APP_BASE_URL,
+    },
     axios: {
       baseURL: process.env.PUBLIC_API_BASE_URL,
     },

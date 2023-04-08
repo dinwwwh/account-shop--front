@@ -1,5 +1,9 @@
-export default function ({ $axios, redirect, error, $typeCheck }, inject) {
+export default function (
+  { $axios, redirect, error, $typeCheck, $config },
+  inject
+) {
   $axios.setHeader('Accept', 'application/json');
+  process.server && $axios.setHeader('Referer', $config.app.baseURL);
 
   inject('withFile', withFile);
 
